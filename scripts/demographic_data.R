@@ -32,10 +32,7 @@ ggplot(average_births_by_state, aes(y = reorder(stname, AverageBirths), x = Aver
   labs(title = "Average Number of Births by State (2001-2019)",
        y = "State",
        x = "Average Number of Births") +
-  theme(axis.text.y = element_text(angle = 0)) # Ensure the y-axis labels are horizontal
-
-# Note: Customize the aesthetics as necessary to fit your dataset's specifics
-
+  theme(axis.text.y = element_text(angle = 0)) 
 
 
 

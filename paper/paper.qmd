@@ -1,88 +1,48 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Red States = Red Flags?"
+subtitle: "An analysis of birth rate trends from 2001 to 2019 and an exploration of political affiliation of different states and Birth rates in the United States,"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Rayan Awad Alim
+  - Maria Mangru
+  - Isha Junega
+thanks: "Code and data are available at: https://github.com/RayanAlim/Birth_Rate_Analysis"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
 bibliography: references.bib
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-```{r}
+{r}
 #| include: false
 #| warning: false
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
-```
 
+Introduction
 
-# Introduction
+broader context to motivate The birth rate is one of the most important determinants of a country’s population growth, potentially impacting policy decisions about the health system, education, and economy (1). https://www.waldenu.edu/programs/health/resource/why-birth-rates-are-significant-in-health-studies-and-health-science
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+some detail about what the paper is about This paper dives into the potential factors that may cause a birth rate to decrease. a clear gap that needs to be filled Not sure what was done We replicated the paper by Kearney, Levine, andPardue (2022) and focused on wages, access to healthcare (with religious importance) and childcare expenditure data to draw conclusions about whether these factors affect the decline or birth rates what was found
 
-The remainder of this paper is structured as follows. @sec-data....
+why is it important the structure of the paper
 
+Data
 
+Article:
 
-# Data {#sec-data}
+Model
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+Model InformationDependent variable: birth rate per 1000 populationIndependent variables:State min wage Abortion delay Child enforcement expenditure Political affiliation Education
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+Model set-up
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+Model defined as:
 
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
@@ -93,21 +53,19 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \sigma &\sim \mbox{Exponential}(1)
 \end{align}
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+We run the model in R [@citeR] using the rstanarm package of @rstanarm. We use the default priors from rstanarm.
 
-
-### Model justification
+Model justification
 
 We expect a positive relationship between the size of the wings and time spent aloft. In particular...
 
 We can use maths by including latex between dollar signs, for instance $\theta$.
 
-
-# Results
+Results
 
 Our results are summarized in @tbl-modelresults.
 
-```{r}
+{r}
 #| echo: false
 #| eval: true
 #| warning: false
@@ -117,9 +75,14 @@ library(rstanarm)
 
 first_model <-
   readRDS(file = here::here("models/first_model.rds"))
-```
 
-```{r}
+1- Medicaid coverage has increased which allows more low-income people to get an abortion. 
+
+2- Maximum well-fare has gone down so it more difficult to raise a kid
+
+3- Parents seem to have more of an interest in having an abortion which aligns with the decrease in number of births
+
+{r}
 #| echo: false
 #| eval: true
 #| label: tbl-modelresults
@@ -133,22 +96,102 @@ modelsummary::modelsummary(
   statistic = "mad",
   fmt = 2
 )
-```
+
+Analysis Results
+
+### Analysis Results
+
+# State-Specific Birth Averages (2001-2019):
+
+The average number of births varies considerably from state to state, with California (CA) having the highest average number of births and Vermont (VT) having the lowest. 
+
+Larger states, both in terms of geography and population like Texas (TX) and New York (NY), show significantly higher average numbers of births, which aligns with the expected outcomes based on population.
+
+Smaller states such as Vermont (VT) and North Dakota (ND) have lower average numbers of births, which may reflect not just smaller populations but also demographic trends such as aging populations.
+
+{r}
+#INTREST DISTRO OVER TIME GRAPHS
+
+# State Minimum Wage Changes (2001-2019):
+
+The District of Columbia (DC) exhibits the largest increase, with its minimum wage rising by $7.85, from $6.15 in 2001 to $14.00 in 2019. Arizona (AZ) and Colorado (CO) also show substantial increases of $6.85 each.
+
+Georgia (GA) and Wyoming (WY) stand out as the only states with no change in minimum wage, maintaining a rate of $5.15 across the years. It is worth noting that this rate is equal to the federal minimum wage between 1997 - 2007, suggesting that these states have not adjusted their minimum wage above the federal floor set at that time.
+
+{r}
+# MINIMUM WAGE GRAPH
+
+# State-Specific Births by Abortion Delay Policy from 2001 to 2019:
+
+The trend lines across the graphs indicate a general decline in birth rates. The decline is more pronounced in states that have implemented delay policies, suggesting a possible correlation between policy enactment and a faster reduction in birth rates. 
 
 
 
+States with Delay
 
-# Discussion
+Birth rates vary significantly between states. For example, Arkansas (AR) shows a sharp decrease in birth rates compared to other states. In contrast, Pennsylvania (PA) has a gentler slope. 
 
-## First discussion point {#sec-first-point}
+The range of birth rates in 2001 spans from approximately 17 per 1000 (excluding Utah (UT)) people in certain states to below 15 per 1000 in others, with a convergence of rates around 12 to 14 per 1000.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
 
-## Second discussion point
 
-## Third discussion point
+The states in this graph are ones which had a policy change from no delay to delay which allows for the analysis of the before-and-after effects of policy implementation. 
 
-## Weaknesses and next steps
+For example, Arizona's (AZ) implementation year of 2009 shows birth rate descends sharply afterward. In contrast, North Carolina (NC) in 2011 didn't show such an immediate shift. 
+
+
+
+The states without delay policies showcase a natural decline in birth rates over time, without the potential influence of policy changes. This trend is consistent across the states, with some variations in the steepness of the decline. 
+
+For example, California (CA) maintains a relatively high birth rate over the years, starting near 15 per 1000 in 2001 and ending around 12 per 1000 in 2019. This could be influenced by its socio-economic profile and immigration patterns.
+
+
+
+All states show a general decline in relative birth rates over the 19-year period, which is in line with the national trend of declining birth rates. 
+
+
+
+State-Specific Trends:
+
+California (CA): The trend in California shows a relatively steady decline throughout the period, without any sharp changes. 
+
+Florida (FL): Florida's trend is similar to California's, with a gradual decline. 
+
+North Carolina (NC): North Carolina, with a policy change in 201, shows a relatively stable trend before the policy change and a sharper decline after.
+
+Texas (TX): Texas exhibited a noticeable decline after the policy implementation year of 2003.
+
+When contrasting the birth rates of Texas and California, two states with large populations, we see that Texas's birth rates declined more sharply after its policy change in 2003 compared to California. This might suggest an association between the policy implementation and the accelerated decline in birth rates in Texas. 
+
+<!-- -->
+
+Comparing Georgia and North Carolina, both of which implemented delay policies. Georgia's birth rates were rising before the policy change and then started declining after, while North Carolina's birth rates were relatively stable before 2011 and then declined.
+
+Discussion
+
+## First discussion point: Abortion 
+
+{r}
+#relative average # of births in states delay
+
+#relative average # of births in states w/o delay
+
+#relative birth rates in selected states
+
+
+Second discussion: Political affiliation 
+
+{r}
+# POLITICAL AFFILIATION MAP
+
+Third discussion point: Minimum Wage
+
+Fourth discussion point: Education
+
+{r}
+#Education graph
+
+Weaknesses and next steps
 
 Weaknesses and next steps should also be included.
 
@@ -156,20 +199,19 @@ Weaknesses and next steps should also be included.
 
 \appendix
 
-# Appendix {-}
+Appendix
 
+Additional data details
 
-# Additional data details
+Model details
 
-# Model details {#sec-model-details}
-
-## Posterior predictive check
+Posterior predictive check
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
 
-```{r}
+{r}
 #| eval: true
 #| echo: false
 #| message: false
@@ -188,15 +230,14 @@ posterior_vs_prior(first_model) +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom") +
   coord_flip()
-```
 
-## Diagnostics
+Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
 @fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
 
-```{r}
+{r}
 #| echo: false
 #| eval: true
 #| message: false
@@ -209,13 +250,11 @@ posterior_vs_prior(first_model) +
 plot(first_model, "trace")
 
 plot(first_model, "rhat")
-```
-
-
 
 \newpage
 
+References
 
-# References
+
 
 

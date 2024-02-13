@@ -33,6 +33,9 @@ ggplot(average_births_by_state, aes(y = reorder(stname, AverageBirths), x = Aver
        y = "State",
        x = "Average Number of Births") +
   theme(axis.text.y = element_text(angle = 0)) 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 

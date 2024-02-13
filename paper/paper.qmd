@@ -17,12 +17,17 @@ editor:
     wrap: 72
 ---
 
+<<<<<<< HEAD
 ```{r echo=FALSE, message=FALSE}
+=======
+{r}
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 #| include: false
 #| warning: false
 #| message: false
 
 library(tidyverse)
+<<<<<<< HEAD
 
 ```
 
@@ -40,6 +45,14 @@ by Kearney, Levine, andPardue (2022) and focused on wages, access to
 healthcare (with religious importance) and childcare expenditure data to
 draw conclusions about whether these factors affect the decline or birth
 rates what was found
+=======
+
+Introduction
+
+broader context to motivate The birth rate is one of the most important determinants of a country’s population growth, potentially impacting policy decisions about the health system, education, and economy (1). https://www.waldenu.edu/programs/health/resource/why-birth-rates-are-significant-in-health-studies-and-health-science
+
+some detail about what the paper is about This paper dives into the potential factors that may cause a birth rate to decrease. a clear gap that needs to be filled Not sure what was done We replicated the paper by Kearney, Levine, andPardue (2022) and focused on wages, access to healthcare (with religious importance) and childcare expenditure data to draw conclusions about whether these factors affect the decline or birth rates what was found
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 why is it important the structure of the paper
 
@@ -49,6 +62,7 @@ Article:
 
 Model
 
+<<<<<<< HEAD
 Model Information Dependent variable: birth rate per 1000 population
 Independent variables:State min wage, Abortion delay, Child enforcement
 expenditure, Political affiliation
@@ -57,6 +71,12 @@ Education
 
 Model set-up
 
+=======
+Model InformationDependent variable: birth rate per 1000 populationIndependent variables:State min wage Abortion delay Child enforcement expenditure Political affiliation Education
+
+Model set-up
+
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 Model defined as:
 
 ```{=tex}
@@ -72,6 +92,7 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 We run the model in R [@citeR] using the rstanarm package of @rstanarm.
 We use the default priors from rstanarm.
 
+<<<<<<< HEAD
 Model justification
 
 We expect a positive relationship between the size of the wings and time
@@ -80,11 +101,25 @@ spent aloft. In particular...
 We can use maths by including latex between dollar signs, for instance
 $\theta$.
 
+=======
+We run the model in R [@citeR] using the rstanarm package of @rstanarm. We use the default priors from rstanarm.
+
+Model justification
+
+We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+
+We can use maths by including latex between dollar signs, for instance $\theta$.
+
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 Results
 
 Our results are summarized in @tbl-modelresults.
 
+<<<<<<< HEAD
 ```{r echo=FALSE, message=FALSE}
+=======
+{r}
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 #| echo: false
 #| eval: true
 #| warning: false
@@ -94,11 +129,27 @@ library(rstanarm)
 
 first_model <-
   readRDS(file = here::here("models/first_model.rds"))
+<<<<<<< HEAD
 
 ```
 
 1- Medicaid coverage has increased which allows more low-income people
 to get an abortion.
+=======
+
+1- Medicaid coverage has increased which allows more low-income people to get an abortion. 
+
+2- Maximum well-fare has gone down so it more difficult to raise a kid
+
+3- Parents seem to have more of an interest in having an abortion which aligns with the decrease in number of births
+
+{r}
+#| echo: false
+#| eval: true
+#| label: tbl-modelresults
+#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| warning: false
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 2- Maximum well-fare has gone down so it more difficult to raise a kid
 
@@ -486,6 +537,7 @@ policy_changes <- data.frame(
   year_implemented = c(2009, 2005, 2003, 2011, 2005, 2003, 2003)
 )
 
+<<<<<<< HEAD
 # Filter combined_data
 transition_states_data <- combined_data %>%
   filter(stname %in% policy_changes$stname)
@@ -504,6 +556,35 @@ ggplot(data = transition_states_data) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+=======
+Analysis Results
+
+### Analysis Results
+
+# State-Specific Birth Averages (2001-2019):
+
+The average number of births varies considerably from state to state, with California (CA) having the highest average number of births and Vermont (VT) having the lowest. 
+
+Larger states, both in terms of geography and population like Texas (TX) and New York (NY), show significantly higher average numbers of births, which aligns with the expected outcomes based on population.
+
+Smaller states such as Vermont (VT) and North Dakota (ND) have lower average numbers of births, which may reflect not just smaller populations but also demographic trends such as aging populations.
+
+{r}
+#INTREST DISTRO OVER TIME GRAPHS
+
+# State Minimum Wage Changes (2001-2019):
+
+The District of Columbia (DC) exhibits the largest increase, with its minimum wage rising by $7.85, from $6.15 in 2001 to $14.00 in 2019. Arizona (AZ) and Colorado (CO) also show substantial increases of $6.85 each.
+
+Georgia (GA) and Wyoming (WY) stand out as the only states with no change in minimum wage, maintaining a rate of $5.15 across the years. It is worth noting that this rate is equal to the federal minimum wage between 1997 - 2007, suggesting that these states have not adjusted their minimum wage above the federal floor set at that time.
+
+{r}
+# MINIMUM WAGE GRAPH
+
+# State-Specific Births by Abortion Delay Policy from 2001 to 2019:
+
+The trend lines across the graphs indicate a general decline in birth rates. The decline is more pronounced in states that have implemented delay policies, suggesting a possible correlation between policy enactment and a faster reduction in birth rates. 
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 #relative birth rates in selected states
 
@@ -513,6 +594,7 @@ library(dplyr)
 library(readr)
 
 
+<<<<<<< HEAD
 # Determine which states had a delay or no delay policy 
 abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
   filter(year >= 2001, year <= 2019) %>%
@@ -601,12 +683,75 @@ ggplot(states_comparison, aes(x = year, y = relative_births, color = stname)) +
 Second discussion: Political affiliation
 
 {r} \# POLITICAL AFFILIATION MAP
+=======
+States with Delay
+
+Birth rates vary significantly between states. For example, Arkansas (AR) shows a sharp decrease in birth rates compared to other states. In contrast, Pennsylvania (PA) has a gentler slope. 
+
+The range of birth rates in 2001 spans from approximately 17 per 1000 (excluding Utah (UT)) people in certain states to below 15 per 1000 in others, with a convergence of rates around 12 to 14 per 1000.
+
+
+
+The states in this graph are ones which had a policy change from no delay to delay which allows for the analysis of the before-and-after effects of policy implementation. 
+
+For example, Arizona's (AZ) implementation year of 2009 shows birth rate descends sharply afterward. In contrast, North Carolina (NC) in 2011 didn't show such an immediate shift. 
+
+
+
+The states without delay policies showcase a natural decline in birth rates over time, without the potential influence of policy changes. This trend is consistent across the states, with some variations in the steepness of the decline. 
+
+For example, California (CA) maintains a relatively high birth rate over the years, starting near 15 per 1000 in 2001 and ending around 12 per 1000 in 2019. This could be influenced by its socio-economic profile and immigration patterns.
+
+
+
+All states show a general decline in relative birth rates over the 19-year period, which is in line with the national trend of declining birth rates. 
+
+
+
+State-Specific Trends:
+
+California (CA): The trend in California shows a relatively steady decline throughout the period, without any sharp changes. 
+
+Florida (FL): Florida's trend is similar to California's, with a gradual decline. 
+
+North Carolina (NC): North Carolina, with a policy change in 201, shows a relatively stable trend before the policy change and a sharper decline after.
+
+Texas (TX): Texas exhibited a noticeable decline after the policy implementation year of 2003.
+
+When contrasting the birth rates of Texas and California, two states with large populations, we see that Texas's birth rates declined more sharply after its policy change in 2003 compared to California. This might suggest an association between the policy implementation and the accelerated decline in birth rates in Texas. 
+
+<!-- -->
+
+Comparing Georgia and North Carolina, both of which implemented delay policies. Georgia's birth rates were rising before the policy change and then started declining after, while North Carolina's birth rates were relatively stable before 2011 and then declined.
+
+Discussion
+
+## First discussion point: Abortion 
+
+{r}
+#relative average # of births in states delay
+
+#relative average # of births in states w/o delay
+
+#relative birth rates in selected states
+
+
+Second discussion: Political affiliation 
+
+{r}
+# POLITICAL AFFILIATION MAP
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 Third discussion point: Minimum Wage
 
 Fourth discussion point: Education
 
+<<<<<<< HEAD
 {r} #Education graph
+=======
+{r}
+#Education graph
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 Weaknesses and next steps
 
@@ -623,13 +768,17 @@ Additional data details
 Model details
 
 Posterior predictive check
+<<<<<<< HEAD
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive
 check. This shows...
+=======
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the
 prior. This shows...
 
+<<<<<<< HEAD
 {r} #\| eval: true #\| echo: false #\| message: false #\| warning: false
 #\| label: fig-ppcheckandposteriorvsprior #\| layout-ncol: 2 #\|
 fig-cap: "Examining how the model fits, and is affected by, the data"
@@ -638,21 +787,55 @@ with the prior"\]
 
 pp_check(first_model) + theme_classic() + theme(legend.position =
 "bottom")
+=======
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
+
+{r}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| label: fig-ppcheckandposteriorvsprior
+#| layout-ncol: 2
+#| fig-cap: "Examining how the model fits, and is affected by, the data"
+#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 posterior_vs_prior(first_model) + theme_minimal() +
 scale_color_brewer(palette = "Set1") + theme(legend.position =
 "bottom") + coord_flip()
 
+<<<<<<< HEAD
+=======
+posterior_vs_prior(first_model) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom") +
+  coord_flip()
+
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 Diagnostics
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
 @fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
 
+<<<<<<< HEAD
 {r} #\| echo: false #\| eval: true #\| message: false #\| warning: false
 #\| label: fig-stanareyouokay #\| fig-cap: "Checking the convergence of
 the MCMC algorithm" #\| fig-subcap: \["Trace plot", "Rhat plot"\] #\|
 layout-ncol: 2
+=======
+{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-stanareyouokay
+#| fig-cap: "Checking the convergence of the MCMC algorithm"
+#| fig-subcap: ["Trace plot", "Rhat plot"]
+#| layout-ncol: 2
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
 
 plot(first_model, "trace")
 
@@ -661,3 +844,10 @@ plot(first_model, "rhat")
 \newpage
 
 References
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856

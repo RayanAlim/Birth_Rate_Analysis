@@ -1,24 +1,23 @@
 library(readxl)
 library(dplyr)
 library(readr)
-
+library(haven)
 
 # Determine which states had a delay or no delay policy 
-abortion_policy <- read_dta("annual_policy/policyvars01_19.dta") %>%
+abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
   filter(year >= 2001, year <= 2019) %>%
   select(delay, stname, year)
-view(abortion_policy)
 
 # Load the population data from the Excel file
-population_data <- read_excel("UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
+population_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
   select(state_name, year, Population) %>%
   filter(year >= 2001, year <= 2019)
 
-numbirths_data <- read_csv("annual_policy/numbirths_2001_2019.csv") %>%
+numbirths_data <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
   rename(births = numbirth1544) %>%
   filter(year >= 2001, year <= 2019)
 
-# Ensure both datasets have the 'stname' column for joining
+# Ensure both data sets have the 'stname' column for joining
 population_data <- population_data %>%
   rename(stname = state_name)
 
@@ -31,7 +30,7 @@ births_population_data <- births_population_data %>%
   mutate(relative_births = (births / Population) * 1000)
 
 # Load the abortion policy data
-abortion_policy <- read_dta("annual_policy/policyvars01_19.dta") %>%
+abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
   select(year, stname, delay)
 
 # Merge the relative births data with the abortion policy data
@@ -50,7 +49,7 @@ combined_data_no_delay <- combined_data %>%
 combined_data_with_delay <- combined_data %>%
   filter(stname %in% states_with_delay)
 
-# Plot for states with no policy delay
+#### Plot for states with no policy delay ####
 ggplot(data = combined_data_no_delay) +
   geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
   labs(title = "Relative Average Number of Births in States Without Delay (2001-2019)",
@@ -59,7 +58,7 @@ ggplot(data = combined_data_no_delay) +
        color = "State") +
   theme_minimal()
 
-# Plot for states with policy delay
+#### Plot for states with policy delay ####
 ggplot(data = combined_data_with_delay) +
   geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
   labs(title = "Relative Average Number of Births in States With Delay (2001-2019)",
@@ -69,6 +68,7 @@ ggplot(data = combined_data_with_delay) +
   theme_minimal()
 
 
+#### States which had a change in policy ####
 # States and years of policy implementation
 policy_changes <- data.frame(
   stname = c("AZ", "GA", "MN", "NC", "OK", "TX", "WV"),
@@ -94,6 +94,7 @@ ggplot(data = transition_states_data) +
 
 
 
+#### Selected comparison states ####
 # Step 1: Select states for comparison
 states_comparison <- combined_data %>%
   filter(stname %in% c("CA", "TX", "GA", "NC", "FL"))
@@ -115,7 +116,7 @@ ca_tx_summary <- ca_tx_data %>%
 ga_nc_fl_data <- states_comparison %>%
   filter(stname %in% c("GA", "NC", "FL"))
 
-# Calculate summary statistics for GA and NC before and after policy changes, and compare with FL
+# Calculate summary statistics for GA and NC before and after policy changes
 ga_nc_fl_summary <- ga_nc_fl_data %>%
   group_by(stname) %>%
   summarise(

@@ -1,9 +1,9 @@
 # Step 1: Import Data
 library(readr)
-data_dir <- "/Users/mariamangru/Desktop/2023 - 2024 Academic Year/STA302/144981-V1"
+data_dir <- "../data/fig_1.csv"
 fig_1_data <- read_delim(file.path(data_dir, "fig_1.csv"), delim = ",", col_types = cols())
 
-# If any columns are read as character that should be numeric, convert them
+# If converting columns which are read as character to numeric 
 fig_1_data <- type.convert(fig_1_data, as.is = TRUE)
 
 # Step 2: Plotting Data
@@ -22,7 +22,7 @@ p <- ggplot(fig_1_data, aes(x = year, y = brate_all)) +
   annotate("text", x = 2007, y = min(fig_1_data$brate_all), label = "2007", vjust = -1)
 
 # Step 3: Export the Graph
-output_dir <- "/Users/mariamangru/Desktop/2023 - 2024 Academic Year/STA302/output"
+output_dir <- "../output"
 ggsave(file.path(output_dir, "fig_1.png"), plot = p, width = 10, height = 8, dpi = 300)
 
 

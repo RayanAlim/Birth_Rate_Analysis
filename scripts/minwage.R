@@ -3,7 +3,7 @@ library(dplyr)
 library(ggplot2)
 
 # Load Data 
-welfare_data <- read_excel("UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data")
+welfare_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data")
 View(welfare_data)
 
 colnames(welfare_data)

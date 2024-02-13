@@ -4,9 +4,9 @@ library(haven)
 library(tidyverse)
 
 # Reading the datasets
-abortion_policy <- read_dta("144981-V1/annual_policy/policyvars01_19.dta")
-numbirths <- read_csv("144981-V1/annual_policy/numbirths_2001_2019.csv")
-population_data <- read_excel("144981-V1/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data")
+abortion_policy <- read_dta("..data/analysis_data/annual_policy/policyvars01_19.dta")
+numbirths <- read_csv("..data/analysis_data/annual_policy/numbirths_2001_2019.csv")
+population_data <- read_excel("..data/analysis_data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data")
 
 # Filtering columns and filtering by year
 abortion_policy_filtered <- abortion_policy %>%

@@ -1,0 +1,73 @@
+library(readxl)
+library(readr)
+library(haven)
+library(tidyverse)
+
+# Reading the datasets
+abortion_policy <- read_dta("144981-V1/annual_policy/policyvars01_19.dta")
+numbirths <- read_csv("144981-V1/annual_policy/numbirths_2001_2019.csv")
+population_data <- read_excel("144981-V1/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data")
+
+# Filtering columns and filtering by year
+abortion_policy_filtered <- abortion_policy %>%
+  select(year, stname, delay, aca_mcaid_exp, pcthsdrop, pcthsgrad, pctsomecol) %>%
+  filter(year >= 2001 & year <= 2019)
+
+population_data_filtered <- population_data %>%
+  select(state_name, year, 
+         Governor_is_Democrat = `Governor is Democrat (1=Yes)`, 
+         State_Minimum_Wage = `State Minimum Wage`) %>%
+  filter(year >= 2001 & year <= 2019) %>%
+  mutate(Governor_is_Democrat = na_if(Governor_is_Democrat, '.'))
+
+numbirths_filtered <- numbirths %>%
+  filter(year >= 2001 & year <= 2019)
+
+# Merging data sets and removing rows with NA values
+merged_data <- numbirths_filtered %>%
+  left_join(abortion_policy_filtered, by = c("year", "stname" = "stname")) %>%
+  left_join(population_data_filtered, by = c("stname" = "state_name", "year")) %>%
+  drop_na(Governor_is_Democrat, delay, aca_mcaid_exp, pcthsdrop, pcthsgrad, pctsomecol, numbirth1544, State_Minimum_Wage)
+
+# Running the regression model on the cleaned and filtered dataset
+model <- lm(numbirth1544 ~ delay + aca_mcaid_exp + pcthsdrop + pcthsgrad + pctsomecol + Governor_is_Democrat + State_Minimum_Wage, data = merged_data)
+
+# Summary of the model
+summary(model)
+
+
+###### Checking assumptions ######
+install.packages("car")
+install.packages("lmtest")
+install.packages("sandwich")
+
+library(tidyverse)
+library(car)
+library(lmtest)
+library(sandwich)
+
+
+# Check for linearity and homoscedasticity
+plot(model, which = 1:2)
+
+# Check for normality of residuals with a Q-Q plot
+qqPlot(model, main = "Q-Q Plot")
+
+# Test for independence of residuals (Durbin-Watson test)
+dwtest(model)
+
+# Check for multicollinearity with Variance Inflation Factors (VIF)
+vif(model) # A VIF value > 5 or 10 indicates high multicollinearity
+
+# Check for homoscedasticity with Breusch-Pagan test
+bptest(model)
+
+# Check for non-random residuals
+# Residuals vs. Fitted values plot
+plot(model, which = 1)
+abline(h = 0, col = "red")
+
+
+
+
+

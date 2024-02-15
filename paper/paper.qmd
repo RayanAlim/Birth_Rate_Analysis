@@ -5,7 +5,7 @@ subtitle:  "Reproduction of ‘The Puzzle of Falling US Birth Rates since the Gr
 author: 
   - Rayan Awad Alim
   - Maria Mangru
-  - Isha Junega
+  - Isha Juneja
 thanks: "Code and data are available at: https://github.com/RayanAlim/Birth_Rate_Analysis"
 date: today
 date-format: long
@@ -109,91 +109,129 @@ education, and childcare support important because they give deeper
 insights regarding why parents may not prefer to have many children and
 therefore may cause a decline in birthrates. The paper is structured to
 include the data, results, and the discussion that include our analysis.
-Although the code used in the original paper is Strata, we use R[@citeR] to
-replicate some of its graphs, as well as to conduct analysis of our own.
+Although the code used in the original paper is Strata, we use R[@citeR]
+to replicate some of its graphs, as well as to conduct analysis of our
+own.
 
 # Data {#sec-data}
 
 ## Data Source and Methodology
 
-As part of our study, we looked closely at the variables influencing the decline in US birth rates. Our goal was to expand on and close the gaps left by Melissa S. Kearney, Phillip B. Levine, and Luke Pardue in their paper, "The Puzzle of Falling US Birth Rates since the Great Recession." The interaction between birth rates and childcare costs, healthcare availability, education, political affiliation, and incomes was the main focus of our research. We replicated many of the visuals and analyses from the original paper using R for data visualization and analysis, building on its conclusions through the use of a variety of datasets and approaches.
-The primary datasets for our study came from a variety of sources, such as the UK Center for Poverty Research National Welfare Database, the annual policy analysis data, and comprehensive birth records from 2001 to 2019. The Center for Poverty Research National Welfare Database [@ukcprWelfareData] at the University of Kentucky supplied more data on state-level laws, minimum wage levels, and political affiliations to supplement these original statistics. The UKCPR National Welfare Data which is a comprehensive dataset that has been compiled and annually updated by the University of Kentucky Center for Poverty Research (UKCPR). This database includes many variables such as population, wage levels, political landscape, dynamics of poverty, employment, and welfare in the United States at the state level. Covering a wide time span from 1980 to 2021, this dataset provides a longitudinal view of significant socio-economic indicators across the country.
-Building on earlier work by Kearney and Levine [@Kearney2022Puzzle], state-specific abortion delay law data was updated using the Guttmacher Institute's "Counseling and Waiting Periods for Abortion" database. The Kaiser Family Foundation's "Status of State Medicaid Expansion Decisions: Interactive Map" (KFF 2021) and a collection of birth statistics were the sources of information on Medicaid expansions.
-The methods used to gather the data made it possible to analyze state-level policies that potentially affect US birth rates in detail between 2001 and 2019. Through the integration of publicly accessible datasets and meticulously curated policy variables, our study offered a comprehensive understanding of the diverse factors influencing the fluctuations in US birth rates.
-
+As part of our study, we looked closely at the variables influencing the
+decline in US birth rates. Our goal was to expand on and close the gaps
+left by Melissa S. Kearney, Phillip B. Levine, and Luke Pardue in their
+paper, "The Puzzle of Falling US Birth Rates since the Great Recession."
+The interaction between birth rates and childcare costs, healthcare
+availability, education, political affiliation, and incomes was the main
+focus of our research. We replicated many of the visuals and analyses
+from the original paper using R for data visualization and analysis,
+building on its conclusions through the use of a variety of datasets and
+approaches. The primary datasets for our study came from a variety of
+sources, such as the UK Center for Poverty Research National Welfare
+Database, the annual policy analysis data, and comprehensive birth
+records from 2001 to 2019. The Center for Poverty Research National
+Welfare Database [@ukcprWelfareData] at the University of Kentucky
+supplied more data on state-level laws, minimum wage levels, and
+political affiliations to supplement these original statistics. The
+UKCPR National Welfare Data which is a comprehensive dataset that has
+been compiled and annually updated by the University of Kentucky Center
+for Poverty Research (UKCPR). This database includes many variables such
+as population, wage levels, political landscape, dynamics of poverty,
+employment, and welfare in the United States at the state level.
+Covering a wide time span from 1980 to 2021, this dataset provides a
+longitudinal view of significant socio-economic indicators across the
+country. Building on earlier work by Kearney and Levine
+[@Kearney2022Puzzle], state-specific abortion delay law data was updated
+using the Guttmacher Institute's "Counseling and Waiting Periods for
+Abortion" database. The Kaiser Family Foundation's "Status of State
+Medicaid Expansion Decisions: Interactive Map" (KFF 2021) and a
+collection of birth statistics were the sources of information on
+Medicaid expansions. The methods used to gather the data made it
+possible to analyze state-level policies that potentially affect US
+birth rates in detail between 2001 and 2019. Through the integration of
+publicly accessible datasets and meticulously curated policy variables,
+our study offered a comprehensive understanding of the diverse factors
+influencing the fluctuations in US birth rates.
 
 ## Variables and Summary Statisitcs
-With an emphasis on the years 2001 to 2019, we created and improved a collection
-of variables which are needed for studying the decrease in birth rates 
-throughout the United States. Our results are stronger because we were able to 
-record the short-term impacts of various different socioeconomic determinants 
-on birth rates during this time. The development of important variables, their 
-importance, storage formats, and the interactions between them are described in 
-detail below. Graphs, summary statistics, and comments are used to provide 
+
+With an emphasis on the years 2001 to 2019, we created and improved a
+collection of variables which are needed for studying the decrease in
+birth rates throughout the United States. Our results are stronger
+because we were able to record the short-term impacts of various
+different socioeconomic determinants on birth rates during this time.
+The development of important variables, their importance, storage
+formats, and the interactions between them are described in detail
+below. Graphs, summary statistics, and comments are used to provide
 context.
 
-The first main variable of interest is the delay variable which looks at the 
-Abortion Policy Delay. This binary variable indicated whether or not a stated 
-has implemented a delay in abortion policy. Our Difference-in-Differences (DiD) 
-analysis relied on this variable to evaluate the policy's effect on birth rates.
-Secondly relative_births was created to determine the relative birth rates of 
-each state by population in order to provide a common metric for comparing birth
-rates among states with different population sizes. This variable was created 
-by combining birth statistics with population estimates. State Minimum Wage 
-(min_wage) indicates the minimum wage for each state in a certain year. 
-The purpose of including this economic variable in the study of the correlation
-between birth rates and salary levels was to test the hypothesis that family
-planning choices could be influenced by greater salaries. Healthcare Access 
-(healthcare_access): An integer-based composite index based on the availability 
-of healthcare facilities and the expansion of Medicaid. This variable sought 
-to measure the ease of access to healthcare services, as this could have an 
-effect on birth rates by affecting the availability of prenatal and postnatal 
-care. Next, the variable childcare_exp quantified whether or not parents 
-received any support for their childcare expenses. Considering the substantial 
-expenses linked to childrearing, this variable was essential to comprehending 
-the financial influences on decisions about family size.
+The first main variable of interest is the delay variable which looks at
+the Abortion Policy Delay. This binary variable indicated whether or not
+a stated has implemented a delay in abortion policy. Our
+Difference-in-Differences (DiD) analysis relied on this variable to
+evaluate the policy's effect on birth rates. Secondly relative_births
+was created to determine the relative birth rates of each state by
+population in order to provide a common metric for comparing birth rates
+among states with different population sizes. This variable was created
+by combining birth statistics with population estimates. State Minimum
+Wage (min_wage) indicates the minimum wage for each state in a certain
+year. The purpose of including this economic variable in the study of
+the correlation between birth rates and salary levels was to test the
+hypothesis that family planning choices could be influenced by greater
+salaries. Healthcare Access (healthcare_access): An integer-based
+composite index based on the availability of healthcare facilities and
+the expansion of Medicaid. This variable sought to measure the ease of
+access to healthcare services, as this could have an effect on birth
+rates by affecting the availability of prenatal and postnatal care.
+Next, the variable childcare_exp quantified whether or not parents
+received any support for their childcare expenses. Considering the
+substantial expenses linked to childrearing, this variable was essential
+to comprehending the financial influences on decisions about family
+size.
 
-High-level cleaning included resolving missing numbers, guaranteeing consistency
-across datasets, and filtering data to the years 2001-2019. Harmonizing 
-variables such as state_name made proper merging possible. To aid in analysis, 
-numerical variables were inspected for anomalies and, if required, normalized.
+High-level cleaning included resolving missing numbers, guaranteeing
+consistency across datasets, and filtering data to the years 2001-2019.
+Harmonizing variables such as state_name made proper merging possible.
+To aid in analysis, numerical variables were inspected for anomalies
+and, if required, normalized.
 
-Visual insights into the effects of abortion policy delays and economic factors
-on birth rates were provided via graphs showing the trend in relative birth 
-rates over time, by state, and by policy status. A summary of the distribution 
-and dispersion of the data was given via summary statistics. For example, the 
-distribution of min_wage brought attention to economic inequities, while the 
-average relative birth rate and its standard deviation showed variances between
-states and years.
+Visual insights into the effects of abortion policy delays and economic
+factors on birth rates were provided via graphs showing the trend in
+relative birth rates over time, by state, and by policy status. A
+summary of the distribution and dispersion of the data was given via
+summary statistics. For example, the distribution of min_wage brought
+attention to economic inequities, while the average relative birth rate
+and its standard deviation showed variances between states and years.
 
-The associations between the important variables were shown using scatter plots
-and correlation analysis. For example, the relationship between min salary and 
-relative births was investigated in order to comprehend the impact of the 
-economy on family planning choices.
-
+The associations between the important variables were shown using
+scatter plots and correlation analysis. For example, the relationship
+between min salary and relative births was investigated in order to
+comprehend the impact of the economy on family planning choices.
 
 ## Measurements
 
-These datasets have several limitations even if they are quite useful for our 
-research. Firstly, reporting variations in birth rates can occur between states 
-and over time. These disparities could be the result of delayed data entry, 
-modifications to reporting requirements, or variations in data collection 
-techniques. These discrepancies could distort the birth rate estimates, 
-causing an overestimation or underestimating in particular states.
+These datasets have several limitations even if they are quite useful
+for our research. Firstly, reporting variations in birth rates can occur
+between states and over time. These disparities could be the result of
+delayed data entry, modifications to reporting requirements, or
+variations in data collection techniques. These discrepancies could
+distort the birth rate estimates, causing an overestimation or
+underestimating in particular states.
 
-Secondly, although the policy data is extensive, it might not fully account 
-for all state-level programs that have the potential to affect birth rates. 
-In addition, they do not give insight into variations within the policy. Birth
-trends may also be significantly influenced by policies that are not covered by 
-the dataset, such as regional healthcare access initiatives or educational 
-initiatives, but these factors are not taken into consideration in our research.
-To address these limitations, we used several strategies. To confirm the trends 
-found and guarantee consistency across sources, we cross-referenced our primary 
-data sources with supplementary datasets and research. Next, in order to 
-determine the potential impact of data mistakes, we performed sensitivity 
-analysis. We evaluated the robustness of our findings to differences in data 
-quality by correcting for any under- or over reporting in birth data.
-
+Secondly, although the policy data is extensive, it might not fully
+account for all state-level programs that have the potential to affect
+birth rates. In addition, they do not give insight into variations
+within the policy. Birth trends may also be significantly influenced by
+policies that are not covered by the dataset, such as regional
+healthcare access initiatives or educational initiatives, but these
+factors are not taken into consideration in our research. To address
+these limitations, we used several strategies. To confirm the trends
+found and guarantee consistency across sources, we cross-referenced our
+primary data sources with supplementary datasets and research. Next, in
+order to determine the potential impact of data mistakes, we performed
+sensitivity analysis. We evaluated the robustness of our findings to
+differences in data quality by correcting for any under- or over
+reporting in birth data.
 
 # Results: {#sec-results}
 
@@ -257,7 +295,7 @@ ggplot(average_births_by_state, aes(x = reorder(stname, -AverageBirths), y = Ave
   labs(title = "Scaled Average Number of Births by State (2001-2019)",
        x = "State",
        y = "Scaled Average Number of Births") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=7))
 ```
 
 ## State Minimum Wage Changes (2001-2019):
@@ -273,6 +311,7 @@ number of births.
 
 ```{r echo=FALSE, message=FALSE, results='asis'}
 #| label: fig-2
+
 
 # Load the data sets
 welfare_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
@@ -301,21 +340,19 @@ scaling_factor <- max_wage / max_births
 
 
 # Plot the graph with adjusted scales
-ggplot(average_data) +
-  #geom_line(aes(x = year, y = Average_Minimum_Wage), colour = "blue", size = 1) +
-  #geom_line(aes(x = year, y = Average_Births * scaling_factor), colour = "red", size = 1) +
-  geom_line(aes(x = year, y = Average_Minimum_Wage), colour = "blue", linewidth = 1) +
-  geom_line(aes(x = year, y = Average_Births * scaling_factor), colour = "red", linewidth = 1) +
+ggplot(average_data, aes(x = year)) +
+  geom_line(aes(y = Average_Minimum_Wage), colour = "blue", linewidth = 1) +
+  geom_line(aes(y = Average_Births * scaling_factor), colour = "red", linewidth = 1) +
   scale_y_continuous(
     "Minimum Wage",
     sec.axis = sec_axis(~ . / scaling_factor, name = "Number of Births")
   ) +
   theme_minimal() +
-  labs(title = "Comparison of Average Minimum Wage and Birth Rates (2001-2009)",
-       x = "Year")
+  labs(title = "Comparison of Average Minimum Wage and Birth Rates (2001-2019)",
+       x = "Year") +
+  theme(plot.title = element_text(size = 10))
 
 ```
-
 
 ## Impact of Abortion Delay Policy
 
@@ -371,9 +408,18 @@ ggplot(data = combined_data_no_delay, aes(x = year, y = relative_births, group =
   geom_line() +
   labs(title = "Relative Average Number of Births in States Without Delay (2001-2019)",
        x = "Year",
-       y = "Relative Average Number of Births per 1000 People",
-       color = "State") +
-  theme_minimal()
+       y = "Relative Average Number of Births per 1000 People") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 8, hjust = 0.5), 
+    axis.title.y = element_text(size = 8), 
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "left", 
+    legend.text = element_text(size = 6), 
+    legend.title = element_text(size = 6), 
+    legend.margin = margin(t = 5, r = 10, b = 0, l = 10) 
+  )
+
 ```
 
 Across the 19-year span, the data for states which have not implemented
@@ -431,13 +477,22 @@ ggplot(data = combined_data_with_delay, aes(x = year, y = relative_births, group
   geom_line() +
   labs(title = "Relative Average Number of Births in States With Delay (2001-2019)",
        x = "Year",
-       y = "Relative Average Number of Births per 1000 People",
-       color = "State") +
-  theme_minimal()
+       y = "Relative Average Number of Births per 1000 People") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 10),  
+    axis.title.y = element_text(size = 10),  
+    axis.text.x = element_text(angle = 45, hjust = 1),  
+    legend.position = "right",  
+    legend.text = element_text(size = 8),  
+    legend.title = element_text(size = 10),  
+    legend.key.size = unit(0.1, 'cm'),  
+    legend.spacing.y = unit(0.1, 'cm')  
+  )
 ```
 
-In contrast, figure 4 looks at the trend of relative average number
-of births which have consistently implemented a delay policy. Similar to
+In contrast, figure 4 looks at the trend of relative average number of
+births which have consistently implemented a delay policy. Similar to
 states which have not implemented a delay policy, birth rates for these
 states have generally decreased over the 19 year period. Over this
 period, the relative average number of births per 1000 people fluctuated
@@ -495,7 +550,6 @@ transition_states_data <- combined_data %>%
 transition_states_data <- combined_data %>%
   filter(stname %in% policy_changes$stname)
 
-
 ggplot(data = transition_states_data, aes(x = year, y = relative_births, group = stname, color = stname)) +
   geom_line() +
   geom_vline(data = policy_changes, aes(xintercept = year_implemented, color = stname), linetype="dashed") +
@@ -506,7 +560,11 @@ ggplot(data = transition_states_data, aes(x = year, y = relative_births, group =
                             y = "Relative Average Number of Births per 1000 People",
                             color = "State") +
                        theme_minimal() +
-                       theme(axis.text.x = element_text(angle = 45, hjust = 1))
+                       theme(
+                         plot.title = element_text(size = 10),
+                         axis.title.y = element_text(size = 10),
+                         axis.text.x = element_text(angle = 45, hjust = 1)
+                         )
 ```
 
 Lastly, figure 5 looks at states which transitioned from having no
@@ -574,7 +632,7 @@ std_errors <- sqrt(diag(vcovHC(did_model, type = "HC1")))
 coef_df <- data.frame(Estimate = coefficients, `Std. Error` = std_errors)
 
 # Output the robust summary as a table
-kable(coef_df, format = "markdown")
+kable(coef_df, format = "markdown", caption = "Table 1")
 
 
 ```
@@ -597,7 +655,6 @@ with a reduction of 0.7770 births per 1000 people relative to TN after
 the policy implementation. - The model explains a significant portion of
 the variance in relative births per 1000 people ($R\^2$ = 0.8267),
 indicating a good fit.
-
 
 ## Education
 
@@ -645,7 +702,6 @@ ggsave("births_by_education_level_over_time.png",
        height = 6)
 
 ```
-
 
 TODO: Results description for Education
 
@@ -742,11 +798,12 @@ TODO: Results description for Political Affiliation
 child_enforce_data <- read_dta("../data/raw_data/annual_policy/policyvars01_19.dta")
 ```
 
-The number of people with ACA Medicaid increased dramatically
-from 2000 to about 2014. As figure 8 depicts, since 2014, the number of people 
-with Medicaid has slowly increased non-decreasingly till 2020. The ACA Medicaid 
-expansion has been adopted and implemented by states at different times, which 
-explains some of the dramatic increases within the data.
+The number of people with ACA Medicaid increased dramatically from 2000
+to about 2014. As figure 8 depicts, since 2014, the number of people
+with Medicaid has slowly increased non-decreasingly till 2020. The ACA
+Medicaid expansion has been adopted and implemented by states at
+different times, which explains some of the dramatic increases within
+the data.
 
 ```{r echo=FALSE, message=FALSE, fig.cap= "Expansion of Medicaid from 2000 to 2020"}
 #| label: fig-8
@@ -756,11 +813,10 @@ ggplot(child_enforce_data, aes(x = year, y = aca_mcaid_exp)) +
   geom_col(fill = "#1f77b4" ) + labs(x = "Year", y = "Number of people with ACA Medicaid ", title = "People with ACA Medicaid Over Time (Years)") + theme_minimal() +  theme(plot.title = element_text(hjust = 0.5))  
 ```
 
-
-In Figure 9, there has been a linear decrease of the maximum welfare benefits
-from 2000 to 2015. From 2015 to 2020 there has been a small rise in the maximum 
-welfare benefits. Overall, there has been a loss in the maximum welfare 
-benefits, despite the small rise.
+In Figure 9, there has been a linear decrease of the maximum welfare
+benefits from 2000 to 2015. From 2015 to 2020 there has been a small
+rise in the maximum welfare benefits. Overall, there has been a loss in
+the maximum welfare benefits, despite the small rise.
 
 ```{r echo=FALSE, message=FALSE}
 #| label: fig-9
@@ -768,7 +824,6 @@ benefits, despite the small rise.
 ggplot(child_enforce_data, aes(x=year, y=logben3)) +
     geom_point()  + labs(x = "Year", y = "Max Welfare Benefits", title = "Max Welfare Benefits Over Time (Years)") + theme_minimal() +  theme(plot.title = element_text(hjust = 0.5))  
 ```
-
 
 In Figure 10, the blue portion of each column represents the number of
 parents who have consent for an abortion. The red portion represents the
@@ -784,11 +839,10 @@ ggplot(child_enforce_data, aes(x = factor(year), fill = factor(parental))) +
   theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, vjust = 0.5))  
 ```
 
-
-
 # Discussion:
 
 ## Abortion Policy
+
 Through the difference-in-difference analysis, the results indicate a
 decrease of approximately 0.777 births per 1000 people in North Carolina
 post policy implementation relative to TN, which did not implement the
@@ -814,7 +868,6 @@ such as economic fluctuations and access to healthcare. Future
 iterations of this paper could expand on this research by conducting
 multi-state analysis for a variety of confounding factors.
 
-
 ## Second discussion: Political affiliation and birth rates
 
 From our analysis of political affiliations over the years, there are
@@ -839,10 +892,7 @@ decrease in birth rates. This can be attributed to increased autonomy
 over reproductive choices, allowing individuals to make informed
 decisions about if and when to have children.
 
-
 ## Education
-
-
 
 ## Child Support Enforcement
 
@@ -864,16 +914,16 @@ making it less affordable for lower-income families to have a larger
 family size.The increasing demand for an abortion and the insurance
 covering it may contribute to a decline in birthrates.
 
-
 ## 4.2 Weakness and Next Steps
 
-A weakness of this paper is a lack of economical context. For example,
-we analyze our data independent of events like the Recession that
-happened in 2008. Without providing context to current events in the
-time period, our paper gives a weaker justification for the decline in
-birthrates. Next steps for improving our analysis include not only
-providing context for the events happening in the US, but focusing on
-the birth rates on a more micro level. Since each state within the US
+An improvement we can add to this paper is adding additional economical
+context along with our data such as investigating events like the
+Recession that took place in 2008, and the conflict regarding
+reproductive right policies. Without providing context to current events
+in the time period, our paper gives a weaker justification for the
+decline in birthrates. Next steps for improving our analysis include not
+only providing context for the events happening in the US, but focusing
+on the birth rates on a more micro level. Since each state within the US
 has its own laws, it will provide more insight to focus on the birth
 rates within each state. Additionally, to improve our analysis
 furthermore, we can compare the US to other countries that are similar
@@ -882,4 +932,5 @@ from an economical standpoint and compare their birth rate to the US.
 \newpage
 
 # References
+Grundy E, Murphy M. Demography and public health. In: Detels R, Gulliford M, Karim QA, Tan CC, editors. Oxford textbook of global public health. 6th ed. Oxford, England: Oxford University Press, 718–35. 2015.
 

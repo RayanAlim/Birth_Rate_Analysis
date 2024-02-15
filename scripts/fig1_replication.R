@@ -1,3 +1,10 @@
+#### Preamble ####
+# Purpose: Replication of figure 1
+# Author: Maria Mangru
+# Date: 15th February, 2024
+# Contact: maria.mangru@utoronto.ca
+
+
 # Step 1: Import Data
 library(readr)
 data_dir <- "../data/fig_1.csv"

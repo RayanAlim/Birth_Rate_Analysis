@@ -1,6 +1,7 @@
 ---
-title: "Red States = Red Flags?"
-subtitle: "An analysis of birth rate trends from 2001 to 2019 and an exploration of political affiliation of different states and Birth rates in the United States,"
+title: "The Decline of US Birth Rates: Analyzing Minimum Wages, Abortion Policies, Education, and Child Support Enforcement"
+subtitle:  "Reproduction of ‘The Puzzle of Falling US Birth Rates since the Great Recession’ (Kearney, Levine and, Pardue,2022)"
+
 author: 
   - Rayan Awad Alim
   - Maria Mangru

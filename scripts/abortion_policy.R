@@ -1,39 +1,48 @@
+#### Preamble ####
+# Purpose: Determine the effect of an abortion delay policy on birth rates
+# variables affect minimum wage 
+# Author: Maria Mangru
+# Date: 15th February, 2024
+# Contact: maria.mangru@utoronto.ca
+
+
+# Load libraries
 library(readxl)
 library(dplyr)
 library(readr)
 library(haven)
+library(ggplot2)
+library(lmtest)
+library(sandwich)
 
-# Determine which states had a delay or no delay policy 
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
+# Define file paths 
+policy_data_path <- "../data/analysis_data/annual_policy/policyvars01_19.dta"
+population_data_path <- "../data/UKCPR_National_Welfare_Data_Update_020623.xlsx"
+births_data_path <- "../data/analysis_data/annual_policy/numbirths_2001_2019.csv"
+
+
+# Load and prepare the abortion policy data
+abortion_policy <- read_dta(policy_data_path) %>%
   filter(year >= 2001, year <= 2019) %>%
-  select(delay, stname, year)
+  select(year, stname, delay)
 
-# Load the population data from the Excel file
-population_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
+# Load and prepare the population data
+population_data <- read_excel(population_data_path, sheet = "Data") %>%
   select(state_name, year, Population) %>%
-  filter(year >= 2001, year <= 2019)
+  filter(year >= 2001, year <= 2019) %>%
+  rename(stname = state_name)
 
-numbirths_data <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
+
+# Load and prepare the number of births data
+numbirths_data <- read_csv(births_data_path) %>%
   rename(births = numbirth1544) %>%
   filter(year >= 2001, year <= 2019)
 
-# Ensure both data sets have the 'stname' column for joining
-population_data <- population_data %>%
-  rename(stname = state_name)
-
-# Merge the number of births data with the population data
+# Merge the datasets
 births_population_data <- numbirths_data %>%
-  left_join(population_data, by = c("year", "stname"))
-
-# Calculate the relative average number of births per 1000 people
-births_population_data <- births_population_data %>%
+  left_join(population_data, by = c("year", "stname")) %>%
   mutate(relative_births = (births / Population) * 1000)
 
-# Load the abortion policy data
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
-  select(year, stname, delay)
-
-# Merge the relative births data with the abortion policy data
 combined_data <- abortion_policy %>%
   left_join(births_population_data, by = c("year", "stname"))
 
@@ -41,95 +50,79 @@ combined_data <- abortion_policy %>%
 states_no_delay <- c("AK", "AL", "CA", "CO", "CT", "DC", "DE", "FL", "HI", "IA", "IL", "MA", "MD", "ME", "MT", "NH", "NJ", "NM", "NV", "NY", "OR", "RI", "TN", "VT", "WA", "WY")
 states_with_delay <- c("AR", "ID", "IN", "KS", "KY", "LA", "MI", "MO", "MS", "ND", "NE", "OH", "PA", "SC", "SD", "UT", "VA", "WI")
 
-# Filter the combined_data for states with no delay
+# Filter data for states with no delay and plot
 combined_data_no_delay <- combined_data %>%
   filter(stname %in% states_no_delay)
 
-# Filter the combined_data for states with delay
-combined_data_with_delay <- combined_data %>%
-  filter(stname %in% states_with_delay)
-
-#### Plot for states with no policy delay ####
-ggplot(data = combined_data_no_delay) +
-  geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
+ggplot(data = combined_data_no_delay, aes(x = year, y = relative_births, group = stname, color = stname)) +
+  geom_line() +
   labs(title = "Relative Average Number of Births in States Without Delay (2001-2019)",
        x = "Year",
        y = "Relative Average Number of Births per 1000 People",
        color = "State") +
   theme_minimal()
 
-#### Plot for states with policy delay ####
-ggplot(data = combined_data_with_delay) +
-  geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
+# Filter data for states with delay and plot
+combined_data_with_delay <- combined_data %>%
+  filter(stname %in% states_with_delay)
+
+ggplot(data = combined_data_with_delay, aes(x = year, y = relative_births, group = stname, color = stname)) +
+  geom_line() +
   labs(title = "Relative Average Number of Births in States With Delay (2001-2019)",
        x = "Year",
        y = "Relative Average Number of Births per 1000 People",
        color = "State") +
   theme_minimal()
 
-
-#### States which had a change in policy ####
-# States and years of policy implementation
+# States which had a change in policy and plot
 policy_changes <- data.frame(
   stname = c("AZ", "GA", "MN", "NC", "OK", "TX", "WV"),
   year_implemented = c(2009, 2005, 2003, 2011, 2005, 2003, 2003)
 )
 
-# Filter combined_data
 transition_states_data <- combined_data %>%
   filter(stname %in% policy_changes$stname)
 
-# Creating the graph
-ggplot(data = transition_states_data) +
-  geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
+# Filter and plot for states which had a change in policy
+transition_states_data <- combined_data %>%
+  filter(stname %in% policy_changes$stname)
+
+
+ggplot(data = transition_states_data, aes(x = year, y = relative_births, group = stname, color = stname)) +
+  geom_line() +
   geom_vline(data = policy_changes, aes(xintercept = year_implemented, color = stname), linetype="dashed") +
   geom_text(data = policy_changes, aes(x = year_implemented, y = Inf, label = year_implemented), vjust = -0.5, color = "black") +
   scale_x_continuous(breaks = seq(2001, 2019, by = 2)) +
-  labs(title = "Transition to Policy Delay and Relative Average Number of Births (2001-2019)",
-       x = "Year",
-       y = "Relative Average Number of Births per 1000 People",
-       color = "State") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+                       labs(title = "Transition to Policy Delay and Relative Average Number of Births (2001-2019)",
+                            x = "Year",
+                            y = "Relative Average Number of Births per 1000 People",
+                            color = "State") +
+                       theme_minimal() +
+                       theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
+# Difference-in-Difference Analysis for NC with a policy change in 2011 compared to a no-delay state
+did_data <- combined_data %>%
+  filter(stname %in% c("NC", "TN"), year >= 2001, year <= 2019) %>%
+  mutate(treatment = if_else(stname == "NC", 1, 0),
+         post_policy = if_else(year >= 2011, 1, 0),
+         treatment_x_post = treatment * post_policy)
 
-#### Selected comparison states ####
-# Step 1: Select states for comparison
-states_comparison <- combined_data %>%
-  filter(stname %in% c("CA", "TX", "GA", "NC", "FL"))
+# Fit the DiD model
+did_model <- lm(relative_births ~ treatment + post_policy + treatment_x_post, data = did_data)
 
-# Step 2: Calculate descriptive statistics and visualize trends
-# For California (no policy change) and Texas (policy change in 2003)
-ca_tx_data <- states_comparison %>%
-  filter(stname %in% c("CA", "TX"))
+# Summary of the DiD model and robust standard errors
+summary_did <- summary(did_model)
+robust_summary <- coeftest(did_model, vcov = vcovHC(did_model, type = "HC1"))
 
-# Calculate summary statistics for CA and TX before and after 2003
-ca_tx_summary <- ca_tx_data %>%
-  group_by(stname) %>%
-  summarise(
-    mean_before = mean(relative_births[year < 2003], na.rm = TRUE),
-    mean_after = mean(relative_births[year >= 2003], na.rm = TRUE)
-  )
+# Output the summaries
+print(summary_did)
+print(robust_summary)
 
-# For Georgia (policy change in 2005), North Carolina (policy change in 2011), and Florida (no policy change)
-ga_nc_fl_data <- states_comparison %>%
-  filter(stname %in% c("GA", "NC", "FL"))
-
-# Calculate summary statistics for GA and NC before and after policy changes
-ga_nc_fl_summary <- ga_nc_fl_data %>%
-  group_by(stname) %>%
-  summarise(
-    mean_before = mean(relative_births[year < if_else(stname == "GA", 2005, if_else(stname == "NC", 2011, year))], na.rm = TRUE),
-    mean_after = mean(relative_births[year >= if_else(stname == "GA", 2005, if_else(stname == "NC", 2011, year))], na.rm = TRUE)
-  )
-
-# Step 3: Visualize trends
-ggplot(states_comparison, aes(x = year, y = relative_births, color = stname)) +
+# Plotting for the DiD analysis
+ggplot(did_data, aes(x = year, y = relative_births, color = stname)) +
   geom_line() +
-  geom_vline(xintercept = c(2003, 2005, 2011), linetype = "dashed", color = "black") +
-  labs(title = "Relative Birth Rates in Selected States (2001-2019)", y = "Relative Births per 1000 People", x = "Year") +
+  geom_vline(xintercept = 2011, linetype="dashed", color = "red") + # Policy change year
+  labs(title = "Relative Births in NC (Treatment) and TN (Comparison) Over Time",
+       x = "Year", y = "Relative Births per 1000 People") +
   theme_minimal()
-
-
-

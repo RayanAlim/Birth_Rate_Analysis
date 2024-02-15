@@ -1,41 +1,52 @@
+#### Preamble ####
+# Purpose: Demographic data to show the average number of births by state 
+# variables affect minimum wage 
+# Author: Maria Mangru
+# Date: 15th February, 2024
+# Contact: maria.mangru@utoronto.ca
+
+
 library(haven)
 library(tidyverse)
 library(tidyr)
 
 
-# Importing the CSV files
+# Importing the CSV file
 numbirths_2001_2019 <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv")
-births_educ_race_age6 <- read_csv("../data/analysis_data/decomp/births_educ_race_age6.csv")
-numbirths_educ_2044 <- read_csv("../data/analysis_data/educ/numbirths_educ_2044.csv")
-state_births_04_19 <- read_csv("../data/analysis_data/map/state_births_04_19.csv") 
 
-# Display the first few rows of each data-frame to verify the imports
-view(numbirths_2001_2019)
-view(births_educ_race_age6)
-view(numbirths_educ_2044)
-view(state_births_04_19)
-
-### Number of Births ### 
-colnames(numbirths_2001_2019)
-
+# Calculate average births scaled down by 1000 for visual representation
 average_births_by_state <- numbirths_2001_2019 %>%
   filter(year >= 2001, year <= 2019) %>%
   group_by(stname) %>%
-  summarize(AverageBirths = mean(numbirth1544, na.rm = TRUE)) %>%
+  summarize(AverageBirths = mean(numbirth1544, na.rm = TRUE) / 1000) %>% # Scale down by a factor of 1000
   ungroup()
-view(average_births_by_state)
 
-
-ggplot(average_births_by_state, aes(y = reorder(stname, AverageBirths), x = AverageBirths)) +
+# Create the bar plot with scaled averages
+ggplot(average_births_by_state, aes(x = reorder(stname, -AverageBirths), y = AverageBirths)) +
   geom_bar(stat = "identity", fill = "steelblue") +
   theme_minimal() +
-  labs(title = "Average Number of Births by State (2001-2019)",
-       y = "State",
-       x = "Average Number of Births") +
-  theme(axis.text.y = element_text(angle = 0)) 
-<<<<<<< HEAD
+  labs(title = "Scaled Average Number of Births by State (2001-2019)",
+       x = "State",
+       y = "Scaled Average Number of Births") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-=======
->>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
+#### Tests ####
+library(testthat)
+
+# Test data import and initial processing
+test_that("Data is imported and filtered correctly", {
+  expect_true(exists("numbirths_2001_2019"))
+  
+  # Ensure the dataset contains the expected columns
+  expect_true(all(c("year", "stname", "numbirth1544") %in% names(numbirths_2001_2019)))
+  
+  # Check if the filtering by year is correct
+  expect_true(all(numbirths_2001_2019$year >= 2001 & numbirths_2001_2019$year <= 2019))
+})
+
+
+
+
+
 
 

@@ -63,6 +63,8 @@ library(sandwich)
 
 # manages graph placement
 knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+#surpress error
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
 # Introduction {#sec-intro}
@@ -667,6 +669,8 @@ the policy implementation. - The model explains a significant portion of
 the variance in relative births per 1000 people ($R\^2$ = 0.8267),
 indicating a good fit.
 
+Figure 11 presents a comparison of Tennessee (TN) and North Carolina (NC)'s relative birth rates per 1,000 people from the early 2000s to the present. The birth rates of both states show a downward trend over time, with NC having a higher birth rate than TN up until about the year shown by the vertical dashed line, which is the year the abortion delay policy was put into place. After this, NC's birth rates begin to decrease more sharply than Tennessee's, raising the possibility that the policy may have an effect. In the years following the policy change, the birth rate gap between the two states gets closer. Both states' general lowering trends are in line with the country's declining birth rate trend during this
+
 ## Education
 
 ```{r echo=FALSE, message=FALSE}
@@ -718,7 +722,7 @@ The figure 6 displays the trend in number of births segmented by education achie
 
 ### State Political Affiliation and Birth Rates
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, }
 #| label: fig-7
 # https://stackoverflow.com/questions/29381652/plotting-us-heat-map-with-text
 
@@ -801,7 +805,7 @@ ggplot(map_data_merged) +
   theme(legend.position = "right")
 ```
 
-TODO: Results description for Political Affiliation
+
 
 ## Child Support Enforcement
 

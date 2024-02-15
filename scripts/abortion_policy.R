@@ -28,8 +28,10 @@ abortion_policy <- read_dta(policy_data_path) %>%
 
 # Load and prepare the population data
 population_data <- read_excel(population_data_path, sheet = "Data") %>%
-  select(state_name = stname, year, Population) %>%
-  filter(year >= 2001, year <= 2019)
+  select(state_name, year, Population) %>%
+  filter(year >= 2001, year <= 2019) %>%
+  rename(stname = state_name)
+
 
 # Load and prepare the number of births data
 numbirths_data <- read_csv(births_data_path) %>%

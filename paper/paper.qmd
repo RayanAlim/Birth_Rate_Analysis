@@ -11,12 +11,11 @@ date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 format: pdf
 number-sections: true
-bibliography: references.bib
+#bibliography: references.bib
 editor: 
   markdown: 
     wrap: 72
 ---
-
 
 ```{r echo=FALSE, message=FALSE}
 #| include: false
@@ -32,66 +31,104 @@ library(dplyr)
 library(readr)
 library(knitr)
 library(ggplot2)
+library(lmtest)
+library(sandwich)
 ```
 
 Introduction
 
-broader context to motivate The birth rate is one of the most important determinants of a country’s population growth, potentially impacting policy decisions about the health system, education, and economy (1). https://www.waldenu.edu/programs/health/resource/why-birth-rates-are-significant-in-health-studies-and-health-science
+A country's birth rate is a key determinant of its population growth,
+which has a profound impact on policy pertaining to education, health,
+and the economy in general. With changing societal expectations and
+family dynamics, birth rates across developed countries have seemingly
+been declining in recent decades. The replacement birth rate is 2.1
+births per female, and significant deviations from this figure have
+consequences that affect countries in several important ways. A high
+birth rate means that society has to adapt to support a growing
+population, which places a stress on resources like food and housing.
+However, a low birth rate means that a society cannot sustain their
+population and elders may be viewed as “burdens”. The contributing
+factors that drive birth rates vary depending by country. This paper
+will focus on exploring findings related to declining birth rates in the
+United States.
 
-some detail about what the paper is about This paper dives into the potential factors that may cause a birth rate to decrease. a clear gap that needs to be filled Not sure what was done We replicated the paper by Kearney, Levine, andPardue (2022) and focused on wages, access to healthcare (with religious importance) and childcare expenditure data to draw conclusions about whether these factors affect the decline or birth rates what was found
-
+Melissa S. Kearney, Phillip B. Levine, and Luke Pardue, analyze
+potential reasons for a decline in birth rate in their paper, “The
+Puzzle of Falling US Birth Rates since the Great Recession.” In their
+analysis, examine birth rates by demographic groups defined by age,
+education, race and ethnicity, marital status, and birth parity inorder
+to find clues that serve as an explanation for the decline. They found
+factors pointing to the time and location do not serve as enough
+explanation to the decline in birthrates, although less quantifiable,
+women shifting their priorities to their aspirations for life instead of
+having more children is an important contributor. Their analysis does
+not explore solid evidence of US-specific policies or economic factors
+that can explain the depth of that decline(). We address this gap by
+replicating their paper and focusing on wages, access to healthcare
+(with religious importance) and childcare expenditure data to draw
+conclusions about whether these factors affect the decline or birth
+rates. We found that XX. This is important because. This paper is
+structured to include the data, results, and the discussion that include
+our analysis. Although the code used in the original paper is Strata, we
+use R to replicate some of its graphs, as well as to conduct analysis of
+our own.
 
 Data
+
+Melissa S. Kearney, Phillip B. Levine, and Luke Pardue's paper "The
+Puzzle of Falling US Birth Rates since the Great Recession" provided one
+of the datasets used in this analysis, notably the policyvars01_19
+dataset. This dataset presents a thorough summary of state-level
+policies that may have an impact on birth rates in the US from 2001 to
+2019 by assembling data on numerous policy variables from numerous
+sources.
 
 Article:
 
 Model
 
+As part of the investigation, the researchers investigated the impact of
+the abortion policy delay on relative number of births per 1000 people
+using a Difference-in-Differences approach. This was done to compare the
+change in outcomes over time for the policy between a treatment group
+and a control group. In this paper, we looked at the effect of the
+abortion delay policy implementation in North Carolina in 2011. The
+control group of choice was Tennesse as this state did not implement an
+abortion delay policy during the years 2001 - 2019. Tennesse was also
+selected as the control group due to its geographical proximity to North
+Carolina and demographic similarities. This was done to satisfy the
+parallel trends assumption. The model employed is as follows:
 
-Model InformationDependent variable: birth rate per 1000 populationIndependent variables:State min wage Abortion delay Child enforcement expenditure Political affiliation
+$[ \text{Relative Birthsit} = \beta_0 + \beta_1 (\text{Treatment}_i) + \beta_2(\text{PostPolicy}_t) + \beta_3(\text{Treatment} \times \text{PostPolicy}t) + \varepsilon{it} ]$
 
-Education
+Where:
 
-Model set-up
+-   Relative Births~it~ is the number of births per 1000 people in state
+    i at time t
 
-Model defined as:
+-   $Treatment_i$ is an indicator for weather state i is NC
 
-```{=tex}
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-```
+-   $PostPolicy_t$ is an indicator for years after the policy change
 
-We run the model in R [@citeR] using the rstanarm package of @rstanarm. We use the default priors from rstanarm.
-
-Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
+-   $Treatment_i$ x $PostPolicy_t$ is the interaction term
 
 Results
 
 1- Medicaid coverage has increased which allows more low-income people
 to get an abortion.
 
-1- Medicaid coverage has increased which allows more low-income people to get an abortion. 
-
-2- Maximum well-fare has gone down so it more difficult to raise a kid
-
-3- Parents seem to have more of an interest in having an abortion which aligns with the decrease in number of births
-
+1- Medicaid coverage has increased which allows more low-income people
+to get an abortion.
 
 2- Maximum well-fare has gone down so it more difficult to raise a kid
 
 3- Parents seem to have more of an interest in having an abortion which
 aligns with the decrease in number of births
 
+2- Maximum well-fare has gone down so it more difficult to raise a kid
+
+3- Parents seem to have more of an interest in having an abortion which
+aligns with the decrease in number of births
 
 Analysis Results
 
@@ -99,209 +136,142 @@ Analysis Results
 
 # State-Specific Birth Averages (2001-2019):
 
-The average number of births varies considerably from state to state,
-with California (CA) having the highest average number of births and
-Vermont (VT) having the lowest.
-
-Larger states, both in terms of geography and population like Texas (TX)
-and New York (NY), show significantly higher average numbers of births,
-which aligns with the expected outcomes based on population.
-
-Smaller states such as Vermont (VT) and North Dakota (ND) have lower
-average numbers of births, which may reflect not just smaller
-populations but also demographic trends such as aging populations.
+Figure 1 presents a summary of the average number of scaled births by
+state over the years 2001 to 2109. Generally, it can be seen that
+certain states exhibit higher average number of births, while others,
+usually smaller states, exhibit lower number of births. The three states
+with the highest averages of births are California (CA), Texas (TX) and
+New York (NY).
 
 ```{r echo=FALSE, message=FALSE}
 
-
-# Importing the CSV files
+# Importing the CSV file
 numbirths_2001_2019 <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv")
-births_educ_race_age6 <- read_csv("../data/analysis_data/decomp/births_educ_race_age6.csv")
-numbirths_educ_2044 <- read_csv("../data/analysis_data/educ/numbirths_educ_2044.csv")
-state_births_04_19 <- read_csv("../data/analysis_data/map/state_births_04_19.csv") 
 
-# Display the first few rows of each data-frame to verify the imports
-view(numbirths_2001_2019)
-view(births_educ_race_age6)
-view(numbirths_educ_2044)
-view(state_births_04_19)
-
-### Number of Births ### 
-colnames(numbirths_2001_2019)
-
+# Calculate average births scaled down by 1000 for visual representation
 average_births_by_state <- numbirths_2001_2019 %>%
   filter(year >= 2001, year <= 2019) %>%
   group_by(stname) %>%
-  summarize(AverageBirths = mean(numbirth1544, na.rm = TRUE)) %>%
+  summarize(AverageBirths = mean(numbirth1544, na.rm = TRUE) / 1000) %>% # Scale down by a factor of 1000
   ungroup()
-view(average_births_by_state)
 
-
-ggplot(average_births_by_state, aes(y = reorder(stname, AverageBirths), x = AverageBirths)) +
+# Create the bar plot with scaled averages
+ggplot(average_births_by_state, aes(x = reorder(stname, -AverageBirths), y = AverageBirths)) +
   geom_bar(stat = "identity", fill = "steelblue") +
   theme_minimal() +
-  labs(title = "Average Number of Births by State (2001-2019)",
-       y = "State",
-       x = "Average Number of Births") +
-  theme(axis.text.y = element_text(angle = 0)) 
+  labs(title = "Scaled Average Number of Births by State (2001-2019)",
+       x = "State",
+       y = "Scaled Average Number of Births") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
+# Child Expenditure
+
+Figure C2 The number of people with ACA Medicaid increased dramatically
+from 2000 to about 2014. Then, since 2014, it has slowly increased
+non-decreasingly till 2020.
+
+Figure C3 There has been a linear decrease of the maximum welfare
+benefits from 2000 to 2015. From 2015 to 2020 there has been a small
+rise in the maximum welfare benefits. Overall, there has been a loss in
+the maximum welfare benefits, despite the small rise.
+
+Figure C4 The blue portion of each column represents the number of
+parents who have consent for an abortion. The red portion represents the
+number of parents who don’t have consent for an abortion. There is a
+slight increase in consent for abortion from 2001 to 2019
 
 # State Minimum Wage Changes (2001-2019):
 
-The District of Columbia (DC) exhibits the largest increase, with its
-minimum wage rising by \$7.85, from \$6.15 in 2001 to \$14.00 in 2019.
-Arizona (AZ) and Colorado (CO) also show substantial increases of \$6.85
-each.
-
-Georgia (GA) and Wyoming (WY) stand out as the only states with no
-change in minimum wage, maintaining a rate of \$5.15 across the years.
-It is worth noting that this rate is equal to the federal minimum wage
-between 1997 - 2007, suggesting that these states have not adjusted
-their minimum wage above the federal floor set at that time.
+Figure 5 shows the trend of the average minimum wage across states
+depicted by the blue line and the average number of births represented
+by the red line, between the years 2001 to 2009. The trend for average
+minimum wage shows a noticeable increase over time. In contrast, the
+average number of births shows a fluctuating trend. Starting from 2001,
+the number of births gradually increase, with a peak occurring around
+2007. After this peak, there is a discernible decline in the average
+number of births.
 
 ```{r echo=FALSE, message=FALSE, results='asis'}
 
-# Load Data 
-welfare_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data")
-
-# Retrieving data for state minimum wage for 2001 - 2019
-filtered_minwage <- welfare_data %>%
+# Load the data sets
+welfare_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
   select(state_name, year, `State Minimum Wage`) %>%
-  filter(year >= 2001, year <= 2019)
+  filter(year >= 2001 & year <= 2019)
 
-##### State Minimum Wage #####
-# Filter data for 2001 and 2019
-minwage_2001 <- welfare_data %>%
-  filter(year == 2001) %>%
-  select(state_name, year, `State Minimum Wage`)
+numbirths_2001_2019 <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
+  select(year, stname, numbirth1544) %>%
+  filter(year >= 2001 & year <= 2019) %>%
+  rename(state_name = stname)
 
-minwage_2019 <- welfare_data %>%
-  filter(year == 2019) %>%
-  select(state_name, year, `State Minimum Wage`)
+# Merge data sets on state_name and year
+merged_data <- merge(welfare_data, numbirths_2001_2019, by = c("state_name", "year"))
 
-# Rename the `State Minimum Wage` columns to reflect the year
-minwage_2001 <- minwage_2001 %>%
-  rename(MinWage2001 = `State Minimum Wage`)
+# Calculate average minimum wage and average number of births per year 
+average_data <- merged_data %>%
+  group_by(year) %>%
+  summarise(Average_Minimum_Wage = mean(`State Minimum Wage`, na.rm = TRUE),
+            Average_Births = mean(numbirth1544, na.rm = TRUE))
 
-minwage_2019 <- minwage_2019 %>%
-  rename(MinWage2019 = `State Minimum Wage`)
 
-# Merge the 2001 and 2019 data by state_name
-minwage_change <- left_join(minwage_2001, minwage_2019, by = "state_name")
+# Find maximum values for scaling 
+max_births <- max(average_data$Average_Births, na.rm = TRUE)
+max_wage <- max(average_data$Average_Minimum_Wage, na.rm = TRUE)
+scaling_factor <- max_wage / max_births
 
-# Calculate the change in minimum wage from 2001 to 2019
-minwage_change <- minwage_change %>%
-  mutate(ChangeInMinWage = MinWage2019 - MinWage2001) %>%
-  select(state_name, MinWage2001, MinWage2019, ChangeInMinWage)
 
-kable(minwage_change, format = "markdown", caption = "Change in State Minimum Wage from 2001 to 2019")
+# Plot the graph with adjusted scales
+ggplot(average_data) +
+  geom_line(aes(x = year, y = Average_Minimum_Wage), colour = "blue", size = 1) +
+  geom_line(aes(x = year, y = Average_Births * scaling_factor), colour = "red", size = 1) +
+  scale_y_continuous(
+    "Minimum Wage",
+    sec.axis = sec_axis(~ . / scaling_factor, name = "Number of Births")
+  ) +
+  theme_minimal() +
+  labs(title = "Comparison of Average Minimum Wage and Birth Rates (2001-2009)",
+       x = "Year")
 
 ```
 
-# State-Specific Births by Abortion Delay Policy from 2001 to 2019:
+# Impact of Abortion Delay Policy
 
-The trend lines across the graphs indicate a general decline in birth
-rates. The decline is more pronounced in states that have implemented
-delay policies, suggesting a possible correlation between policy
-enactment and a faster reduction in birth rates.
+Abortion delay policies refer to state-level regulations which stipulate
+a required waiting period between a woman’s initial consultation for an
+abortion and the procedure itself. This paper looks at states which have
+consistently implemented an abortion delay policy, those without this
+policy and those which have shifted from having no delay to have a delay
+policy between the years 2001 to 2019.
 
-States with Delay
+```{r echo=FALSE, message=FALSE, results='asis'}
+# Define file paths 
+policy_data_path <- "../data/analysis_data/annual_policy/policyvars01_19.dta"
+population_data_path <- "../data/UKCPR_National_Welfare_Data_Update_020623.xlsx"
+births_data_path <- "../data/analysis_data/annual_policy/numbirths_2001_2019.csv"
 
-Birth rates vary significantly between states. For example, Arkansas
-(AR) shows a sharp decrease in birth rates compared to other states. In
-contrast, Pennsylvania (PA) has a gentler slope.
 
-The range of birth rates in 2001 spans from approximately 17 per 1000
-(excluding Utah (UT)) people in certain states to below 15 per 1000 in
-others, with a convergence of rates around 12 to 14 per 1000.
-
-The states in this graph are ones which had a policy change from no
-delay to delay which allows for the analysis of the before-and-after
-effects of policy implementation.
-
-For example, Arizona's (AZ) implementation year of 2009 shows birth rate
-descends sharply afterward. In contrast, North Carolina (NC) in 2011
-didn't show such an immediate shift.
-
-The states without delay policies showcase a natural decline in birth
-rates over time, without the potential influence of policy changes. This
-trend is consistent across the states, with some variations in the
-steepness of the decline.
-
-For example, California (CA) maintains a relatively high birth rate over
-the years, starting near 15 per 1000 in 2001 and ending around 12 per
-1000 in 2019. This could be influenced by its socio-economic profile and
-immigration patterns.
-
-All states show a general decline in relative birth rates over the
-19-year period, which is in line with the national trend of declining
-birth rates.
-
-State-Specific Trends:
-
-California (CA): The trend in California shows a relatively steady
-decline throughout the period, without any sharp changes.
-
-Florida (FL): Florida's trend is similar to California's, with a gradual
-decline.
-
-North Carolina (NC): North Carolina, with a policy change in 201, shows
-a relatively stable trend before the policy change and a sharper decline
-after.
-
-Texas (TX): Texas exhibited a noticeable decline after the policy
-implementation year of 2003.
-
-When contrasting the birth rates of Texas and California, two states
-with large populations, we see that Texas's birth rates declined more
-sharply after its policy change in 2003 compared to California. This
-might suggest an association between the policy implementation and the
-accelerated decline in birth rates in Texas.
-
-Comparing Georgia and North Carolina, both of which implemented delay
-policies. Georgia's birth rates were rising before the policy change and
-then started declining after, while North Carolina's birth rates were
-relatively stable before 2011 and then declined.
-
-Discussion
-
-## First discussion point: Abortion
-
-#relative average \# of births in states delay
-
-```{r echo=FALSE, message=FALSE}
-
-# Determine which states had a delay or no delay policy 
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
+# Load and prepare the abortion policy data
+abortion_policy <- read_dta(policy_data_path) %>%
   filter(year >= 2001, year <= 2019) %>%
-  select(delay, stname, year)
+  select(year, stname, delay)
 
-# Load the population data from the Excel file
-population_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
+# Load and prepare the population data
+population_data <- read_excel(population_data_path, sheet = "Data") %>%
   select(state_name, year, Population) %>%
-  filter(year >= 2001, year <= 2019)
+  filter(year >= 2001, year <= 2019) %>%
+  rename(stname = state_name)
 
-numbirths_data <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
+
+# Load and prepare the number of births data
+numbirths_data <- read_csv(births_data_path) %>%
   rename(births = numbirth1544) %>%
   filter(year >= 2001, year <= 2019)
 
-# Ensure both datasets have the 'stname' column for joining
-population_data <- population_data %>%
-  rename(stname = state_name)
-
-# Merge the number of births data with the population data
+# Merge the datasets
 births_population_data <- numbirths_data %>%
-  left_join(population_data, by = c("year", "stname"))
-
-# Calculate the relative average number of births per 1000 people
-births_population_data <- births_population_data %>%
+  left_join(population_data, by = c("year", "stname")) %>%
   mutate(relative_births = (births / Population) * 1000)
 
-# Load the abortion policy data
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
-  select(year, stname, delay)
-
-# Merge the relative births data with the abortion policy data
 combined_data <- abortion_policy %>%
   left_join(births_population_data, by = c("year", "stname"))
 
@@ -309,120 +279,58 @@ combined_data <- abortion_policy %>%
 states_no_delay <- c("AK", "AL", "CA", "CO", "CT", "DC", "DE", "FL", "HI", "IA", "IL", "MA", "MD", "ME", "MT", "NH", "NJ", "NM", "NV", "NY", "OR", "RI", "TN", "VT", "WA", "WY")
 states_with_delay <- c("AR", "ID", "IN", "KS", "KY", "LA", "MI", "MO", "MS", "ND", "NE", "OH", "PA", "SC", "SD", "UT", "VA", "WI")
 
-# Filter the combined_data for states with no delay
+# Filter data for states with no delay and plot
 combined_data_no_delay <- combined_data %>%
   filter(stname %in% states_no_delay)
 
-# Filter the combined_data for states with delay
-combined_data_with_delay <- combined_data %>%
-  filter(stname %in% states_with_delay)
-
-# Plot for states with policy delay
-ggplot(data = combined_data_with_delay) +
-  geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
-  labs(title = "Relative Average Number of Births in States With Delay (2001-2019)",
-       x = "Year",
-       y = "Relative Average Number of Births per 1000 People",
-       color = "State") +
-  theme_minimal()
-
-```
-
-#relative average \# of births in states w/o delay
-
-```{r echo=FALSE, message=FALSE}
-# Determine which states had a delay or no delay policy 
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
-  filter(year >= 2001, year <= 2019) %>%
-  select(delay, stname, year)
-
-# Load the population data from the Excel file
-population_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
-  select(state_name, year, Population) %>%
-  filter(year >= 2001, year <= 2019)
-
-numbirths_data <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
-  rename(births = numbirth1544) %>%
-  filter(year >= 2001, year <= 2019)
-
-# Ensure both datasets have the 'stname' column for joining
-population_data <- population_data %>%
-  rename(stname = state_name)
-
-# Merge the number of births data with the population data
-births_population_data <- numbirths_data %>%
-  left_join(population_data, by = c("year", "stname"))
-
-# Calculate the relative average number of births per 1000 people
-births_population_data <- births_population_data %>%
-  mutate(relative_births = (births / Population) * 1000)
-
-# Load the abortion policy data
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
-  select(year, stname, delay)
-
-# Merge the relative births data with the abortion policy data
-combined_data <- abortion_policy %>%
-  left_join(births_population_data, by = c("year", "stname"))
-
-# Define the groups based on predefined 'states_no_delay' and 'states_with_delay'
-states_no_delay <- c("AK", "AL", "CA", "CO", "CT", "DC", "DE", "FL", "HI", "IA", "IL", "MA", "MD", "ME", "MT", "NH", "NJ", "NM", "NV", "NY", "OR", "RI", "TN", "VT", "WA", "WY")
-states_with_delay <- c("AR", "ID", "IN", "KS", "KY", "LA", "MI", "MO", "MS", "ND", "NE", "OH", "PA", "SC", "SD", "UT", "VA", "WI")
-
-# Filter the combined_data for states with no delay
-combined_data_no_delay <- combined_data %>%
-  filter(stname %in% states_no_delay)
-
-# Filter the combined_data for states with delay
-combined_data_with_delay <- combined_data %>%
-  filter(stname %in% states_with_delay)
-
-# Plot for states with no policy delay
-ggplot(data = combined_data_no_delay) +
-  geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
+ggplot(data = combined_data_no_delay, aes(x = year, y = relative_births, group = stname, color = stname)) +
+  geom_line() +
   labs(title = "Relative Average Number of Births in States Without Delay (2001-2019)",
        x = "Year",
        y = "Relative Average Number of Births per 1000 People",
        color = "State") +
   theme_minimal()
-
 ```
 
-#relative birth rates in transition states
+Across the 19-year span, the data for states which have not implemented
+an abortion policy showcases a wide range of trends. Several states
+demonstrate a peak in birth rates at various points during the study
+period. While there is variation between the states, the overall
+trajectory indicated that the early to late 2000s were a period of
+higher birth rates, with a shift toward lower birth rates post 2010. It
+is important to note that this data in Figure 7 showcases the relative
+average number of births per 1000 people and fluctuates from 10 to
+approximately 16.
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, results='asis'}
+# Define file paths 
+policy_data_path <- "../data/analysis_data/annual_policy/policyvars01_19.dta"
+population_data_path <- "../data/UKCPR_National_Welfare_Data_Update_020623.xlsx"
+births_data_path <- "../data/analysis_data/annual_policy/numbirths_2001_2019.csv"
 
-# Determine which states had a delay or no delay policy 
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
+
+# Load and prepare the abortion policy data
+abortion_policy <- read_dta(policy_data_path) %>%
   filter(year >= 2001, year <= 2019) %>%
-  select(delay, stname, year)
+  select(year, stname, delay)
 
-# Load the population data from the Excel file
-population_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
+# Load and prepare the population data
+population_data <- read_excel(population_data_path, sheet = "Data") %>%
   select(state_name, year, Population) %>%
-  filter(year >= 2001, year <= 2019)
+  filter(year >= 2001, year <= 2019) %>%
+  rename(stname = state_name)
 
-numbirths_data <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
+
+# Load and prepare the number of births data
+numbirths_data <- read_csv(births_data_path) %>%
   rename(births = numbirth1544) %>%
   filter(year >= 2001, year <= 2019)
 
-# Ensure both datasets have the 'stname' column for joining
-population_data <- population_data %>%
-  rename(stname = state_name)
-
-# Merge the number of births data with the population data
+# Merge the datasets
 births_population_data <- numbirths_data %>%
-  left_join(population_data, by = c("year", "stname"))
-
-# Calculate the relative average number of births per 1000 people
-births_population_data <- births_population_data %>%
+  left_join(population_data, by = c("year", "stname")) %>%
   mutate(relative_births = (births / Population) * 1000)
 
-# Load the abortion policy data
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
-  select(year, stname, delay)
-
-# Merge the relative births data with the abortion policy data
 combined_data <- abortion_policy %>%
   left_join(births_population_data, by = c("year", "stname"))
 
@@ -430,158 +338,228 @@ combined_data <- abortion_policy %>%
 states_no_delay <- c("AK", "AL", "CA", "CO", "CT", "DC", "DE", "FL", "HI", "IA", "IL", "MA", "MD", "ME", "MT", "NH", "NJ", "NM", "NV", "NY", "OR", "RI", "TN", "VT", "WA", "WY")
 states_with_delay <- c("AR", "ID", "IN", "KS", "KY", "LA", "MI", "MO", "MS", "ND", "NE", "OH", "PA", "SC", "SD", "UT", "VA", "WI")
 
-# Filter the combined_data for states with no delay
-combined_data_no_delay <- combined_data %>%
-  filter(stname %in% states_no_delay)
-
-# Filter the combined_data for states with delay
+# Filter data for states with delay and plot
 combined_data_with_delay <- combined_data %>%
   filter(stname %in% states_with_delay)
 
+ggplot(data = combined_data_with_delay, aes(x = year, y = relative_births, group = stname, color = stname)) +
+  geom_line() +
+  labs(title = "Relative Average Number of Births in States With Delay (2001-2019)",
+       x = "Year",
+       y = "Relative Average Number of Births per 1000 People",
+       color = "State") +
+  theme_minimal()
+```
 
-# States and years of policy implementation
+In contrast, figure \[\] looks at the trend of relative average number
+of births which have consistently implemented a delay policy. Similar to
+states which have not implemented a delay policy, birth rates for these
+states have generally decreased over the 19 year period. Over this
+period, the relative average number of births per 1000 people fluctuated
+significantly, ranging from around 10 to over 20.
+
+```{r echo=FALSE, message=FALSE, results='asis'}
+
+# Define file paths 
+policy_data_path <- "../data/analysis_data/annual_policy/policyvars01_19.dta"
+population_data_path <- "../data/UKCPR_National_Welfare_Data_Update_020623.xlsx"
+births_data_path <- "../data/analysis_data/annual_policy/numbirths_2001_2019.csv"
+
+
+# Load and prepare the abortion policy data
+abortion_policy <- read_dta(policy_data_path) %>%
+  filter(year >= 2001, year <= 2019) %>%
+  select(year, stname, delay)
+
+# Load and prepare the population data
+population_data <- read_excel(population_data_path, sheet = "Data") %>%
+  select(state_name, year, Population) %>%
+  filter(year >= 2001, year <= 2019) %>%
+  rename(stname = state_name)
+
+
+# Load and prepare the number of births data
+numbirths_data <- read_csv(births_data_path) %>%
+  rename(births = numbirth1544) %>%
+  filter(year >= 2001, year <= 2019)
+
+# Merge the datasets
+births_population_data <- numbirths_data %>%
+  left_join(population_data, by = c("year", "stname")) %>%
+  mutate(relative_births = (births / Population) * 1000)
+
+combined_data <- abortion_policy %>%
+  left_join(births_population_data, by = c("year", "stname"))
+
+# Define the groups based on predefined 'states_no_delay' and 'states_with_delay'
+states_no_delay <- c("AK", "AL", "CA", "CO", "CT", "DC", "DE", "FL", "HI", "IA", "IL", "MA", "MD", "ME", "MT", "NH", "NJ", "NM", "NV", "NY", "OR", "RI", "TN", "VT", "WA", "WY")
+states_with_delay <- c("AR", "ID", "IN", "KS", "KY", "LA", "MI", "MO", "MS", "ND", "NE", "OH", "PA", "SC", "SD", "UT", "VA", "WI")
+
+
+# States which had a change in policy and plot
 policy_changes <- data.frame(
   stname = c("AZ", "GA", "MN", "NC", "OK", "TX", "WV"),
   year_implemented = c(2009, 2005, 2003, 2011, 2005, 2003, 2003)
 )
 
-# Filter combined_data
 transition_states_data <- combined_data %>%
   filter(stname %in% policy_changes$stname)
 
-# Creating the graph
-ggplot(data = transition_states_data) +
-  geom_line(aes(x = year, y = relative_births, group = stname, color = stname)) +
+# Filter and plot for states which had a change in policy
+transition_states_data <- combined_data %>%
+  filter(stname %in% policy_changes$stname)
+
+
+ggplot(data = transition_states_data, aes(x = year, y = relative_births, group = stname, color = stname)) +
+  geom_line() +
   geom_vline(data = policy_changes, aes(xintercept = year_implemented, color = stname), linetype="dashed") +
   geom_text(data = policy_changes, aes(x = year_implemented, y = Inf, label = year_implemented), vjust = -0.5, color = "black") +
   scale_x_continuous(breaks = seq(2001, 2019, by = 2)) +
-  labs(title = "Transition to Policy Delay and Relative Average Number of Births (2001-2019)",
-       x = "Year",
-       y = "Relative Average Number of Births per 1000 People",
-       color = "State") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
+                       labs(title = "Transition to Policy Delay and Relative Average Number of Births (2001-2019)",
+                            x = "Year",
+                            y = "Relative Average Number of Births per 1000 People",
+                            color = "State") +
+                       theme_minimal() +
+                       theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Analysis Results
+Lastly, figure \[\] looks at states which transitioned from having no
+abortion delay to policy to implementing this policy at various years
+(indicated by the broken lines). A common trend among these states was
+an initial period of relatively higher birth rates in the early 2000s,
+with subsequent declines over the years. This trend also closely follows
+what observed for states which implemented an abortion delay policy and
+those which have not implemented such a policy.
 
-### Analysis Results
+# Difference-in-Difference
 
-# State-Specific Birth Averages (2001-2019):
-
-The average number of births varies considerably from state to state, with California (CA) having the highest average number of births and Vermont (VT) having the lowest. 
-
-Larger states, both in terms of geography and population like Texas (TX) and New York (NY), show significantly higher average numbers of births, which aligns with the expected outcomes based on population.
-
-Smaller states such as Vermont (VT) and North Dakota (ND) have lower average numbers of births, which may reflect not just smaller populations but also demographic trends such as aging populations.
-
-{r}
-#INTREST DISTRO OVER TIME GRAPHS
-
-# State Minimum Wage Changes (2001-2019):
-
-The District of Columbia (DC) exhibits the largest increase, with its minimum wage rising by $7.85, from $6.15 in 2001 to $14.00 in 2019. Arizona (AZ) and Colorado (CO) also show substantial increases of $6.85 each.
-
-Georgia (GA) and Wyoming (WY) stand out as the only states with no change in minimum wage, maintaining a rate of $5.15 across the years. It is worth noting that this rate is equal to the federal minimum wage between 1997 - 2007, suggesting that these states have not adjusted their minimum wage above the federal floor set at that time.
-
-{r}
-# MINIMUM WAGE GRAPH
-
-# State-Specific Births by Abortion Delay Policy from 2001 to 2019:
-
-The trend lines across the graphs indicate a general decline in birth rates. The decline is more pronounced in states that have implemented delay policies, suggesting a possible correlation between policy enactment and a faster reduction in birth rates. 
->>>>>>> 9e43bbea0ebd995129f3e0d14bc9e8ec625b3856
-
-#relative birth rates in selected states
-
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, results='asis'}
+# Define file paths 
+policy_data_path <- "../data/analysis_data/annual_policy/policyvars01_19.dta"
+population_data_path <- "../data/UKCPR_National_Welfare_Data_Update_020623.xlsx"
+births_data_path <- "../data/analysis_data/annual_policy/numbirths_2001_2019.csv"
 
 
-# Determine which states had a delay or no delay policy 
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
+# Load and prepare the abortion policy data
+abortion_policy <- read_dta(policy_data_path) %>%
   filter(year >= 2001, year <= 2019) %>%
-  select(delay, stname, year)
+  select(year, stname, delay)
 
-# Load the population data from the Excel file
-population_data <- read_excel("../data/UKCPR_National_Welfare_Data_Update_020623.xlsx", sheet = "Data") %>%
+# Load and prepare the population data
+population_data <- read_excel(population_data_path, sheet = "Data") %>%
   select(state_name, year, Population) %>%
-  filter(year >= 2001, year <= 2019)
+  filter(year >= 2001, year <= 2019) %>%
+  rename(stname = state_name)
 
-numbirths_data <- read_csv("../data/analysis_data/annual_policy/numbirths_2001_2019.csv") %>%
+
+# Load and prepare the number of births data
+numbirths_data <- read_csv(births_data_path) %>%
   rename(births = numbirth1544) %>%
   filter(year >= 2001, year <= 2019)
 
-# Ensure both datasets have the 'stname' column for joining
-population_data <- population_data %>%
-  rename(stname = state_name)
-
-# Merge the number of births data with the population data
+# Merge the datasets
 births_population_data <- numbirths_data %>%
-  left_join(population_data, by = c("year", "stname"))
-
-# Calculate the relative average number of births per 1000 people
-births_population_data <- births_population_data %>%
+  left_join(population_data, by = c("year", "stname")) %>%
   mutate(relative_births = (births / Population) * 1000)
 
-# Load the abortion policy data
-abortion_policy <- read_dta("../data/analysis_data/annual_policy/policyvars01_19.dta") %>%
-  select(year, stname, delay)
-
-# Merge the relative births data with the abortion policy data
 combined_data <- abortion_policy %>%
   left_join(births_population_data, by = c("year", "stname"))
 
-# Define the groups based on predefined 'states_no_delay' and 'states_with_delay'
-states_no_delay <- c("AK", "AL", "CA", "CO", "CT", "DC", "DE", "FL", "HI", "IA", "IL", "MA", "MD", "ME", "MT", "NH", "NJ", "NM", "NV", "NY", "OR", "RI", "TN", "VT", "WA", "WY")
-states_with_delay <- c("AR", "ID", "IN", "KS", "KY", "LA", "MI", "MO", "MS", "ND", "NE", "OH", "PA", "SC", "SD", "UT", "VA", "WI")
+# Difference-in-Difference Analysis for NC with a policy change in 2011 compared to a no-delay state
+did_data <- combined_data %>%
+  filter(stname %in% c("NC", "TN"), year >= 2001, year <= 2019) %>%
+  mutate(treatment = if_else(stname == "NC", 1, 0),
+         post_policy = if_else(year >= 2011, 1, 0),
+         treatment_x_post = treatment * post_policy)
 
-# Filter the combined_data for states with no delay
-combined_data_no_delay <- combined_data %>%
-  filter(stname %in% states_no_delay)
+# Fit the DiD model
+did_model <- lm(relative_births ~ treatment + post_policy + treatment_x_post, data = did_data)
 
-# Filter the combined_data for states with delay
-combined_data_with_delay <- combined_data %>%
-  filter(stname %in% states_with_delay)
+# Summary of the DiD model and robust standard errors
+summary_did <- summary(did_model)
+robust_summary <- coeftest(did_model, vcov = vcovHC(did_model, type = "HC1"))
 
+# Extract coefficients and their standard errors
+coefficients <- coef(robust_summary)
+std_errors <- sqrt(diag(vcovHC(did_model, type = "HC1")))
 
-# Step 1: Select states for comparison
-states_comparison <- combined_data %>%
-  filter(stname %in% c("CA", "TX", "GA", "NC", "FL"))
+# Combine coefficients and standard errors into a data frame
+coef_df <- data.frame(Estimate = coefficients, `Std. Error` = std_errors)
 
-# Step 2: Calculate descriptive statistics and visualize trends
-# For California (no policy change) and Texas (policy change in 2003)
-ca_tx_data <- states_comparison %>%
-  filter(stname %in% c("CA", "TX"))
+# Output the robust summary as a table
+kable(coef_df, format = "markdown")
 
-# Calculate summary statistics for CA and TX before and after 2003
-ca_tx_summary <- ca_tx_data %>%
-  group_by(stname) %>%
-  summarise(
-    mean_before = mean(relative_births[year < 2003], na.rm = TRUE),
-    mean_after = mean(relative_births[year >= 2003], na.rm = TRUE)
-  )
-
-# For Georgia (policy change in 2005), North Carolina (policy change in 2011), and Florida (no policy change)
-ga_nc_fl_data <- states_comparison %>%
-  filter(stname %in% c("GA", "NC", "FL"))
-
-# Calculate summary statistics for GA and NC before and after policy changes, and compare with FL
-ga_nc_fl_summary <- ga_nc_fl_data %>%
-  group_by(stname) %>%
-  summarise(
-    mean_before = mean(relative_births[year < if_else(stname == "GA", 2005, if_else(stname == "NC", 2011, year))], na.rm = TRUE),
-    mean_after = mean(relative_births[year >= if_else(stname == "GA", 2005, if_else(stname == "NC", 2011, year))], na.rm = TRUE)
-  )
-
-# Step 3: Visualize trends
-ggplot(states_comparison, aes(x = year, y = relative_births, color = stname)) +
-  geom_line() +
-  geom_vline(xintercept = c(2003, 2005, 2011), linetype = "dashed", color = "black") +
-  labs(title = "Relative Birth Rates in Selected States (2001-2019)", y = "Relative Births per 1000 People", x = "Year") +
-  theme_minimal()
 
 ```
+
+These abortion delay policies created natural experiments which can be
+used to apply a Difference-in-Differences approach. The results from
+comparing North Carolina (treatment) with Tennessee (control) are as
+follow: - The intercept ($B_0$) estimate is 13.4345, suggesting that the
+baseline relative number of births per 1000 people is 13.4345 in the
+absence of treatment and before the policy change. - The treatment
+effect ($B_1$) is estimated at 0.4887, which is statistically
+significant (p = 0.01078). This indicates that, prior to the policy
+change, NC had 0.4887 more births per 1000 people than TN. - The
+post_policy effect ($B_2$) is -1.2372, also statistically significant (p
+= 1.26e-07), suggesting a general decrease in relative births per 1000
+people after 2011 in both states. - The interaction term ($B_3$), which
+represents the estimated effect of the policy change, is -0.7770, with a
+p-value of 0.00569, indicating that the policy delay in NC is associated
+with a reduction of 0.7770 births per 1000 people relative to TN after
+the policy implementation. - The model explains a significant portion of
+the variance in relative births per 1000 people ($R\^2$ = 0.8267),
+indicating a good fit.
+
+# Education
+
+#Politicial Affiliation
+
+Discussion \# Medicaid - remove heading after The Affordable Care
+(ACA)’s Medicaid is “intended to address systemic health inequalities
+for millions of Americans who lack health insurance” Medicaid is
+“expected to provide coverage to low-income individuals,” and also
+covers low-income pregnant women. Excluding the states where abortion is
+banned, Medicaid covers abortions, making it more accessible. According
+to Figure C1, More people continue to have medicaid as seen based on the
+trend from 2000 to 2020, making an affordable abortion more accessible.
+In Figure C3, we can see that there is an increase in parental consent
+for abortion. In other words, more parents are increasingly interested
+in getting an abortion every year. A potential motivator for parents to
+want an abortion is that as a low-income family, it is harder to take
+care of a larger family. Welfare is “federal government-sponsored
+assistance programs for individuals and families in need.” In Figure C2,
+it is evident that there is a decrease in maximum welfare benefits,
+making it less affordable for lower-income families to have a larger
+family size.The increasing demand for an abortion and the insurance
+covering it may contribute to a decline in birthrates.
+
+# Abortion policy - remove heading after
+
+Through the difference-in-difference analysis, the results indicate a
+decrease of approximately 0.777 births per 1000 people in North Carolina
+post policy implementation relative to TN, which did not implement the
+abortion delay policy. This decrease is statistically significant,
+suggesting that implementing an abortion delay policy may have a real
+effect on birth rates.
+
+The observed decrease in birth rates in North Carolina post 2011 could
+be partially explained by increased barriers to access as highlighted by
+de Londras et al. whose review supports the results derived in this
+paper. This review summarizes the effects of mandated waiting periods
+(MWPs) on outcomes connected to abortion. Their analysis suggests that
+MWPs may cause delays in obtaining abortion services, which may lower
+the number of births particularly in young, unmarried women. Noting the
+disproportionate impact on marginalized populations, such as teenagers,
+persons of color, and those with lower socioeconomic standing, they also
+draw attention to the broader human rights concerns of MWPs.
+
+The results of the DiD found in this paper are supported by strong
+standard errors. However, we need to consider the limitations of the DiD
+approach as there are several other factors which may impact birth rates
+such as economic fluctuations and access to healthcare. Future
+iterations of this paper could expand on this research by conducting
+multi-state analysis for a variety of confounding factors.
 
 Second discussion: Political affiliation
 
@@ -589,75 +567,24 @@ Second discussion: Political affiliation
 # POLITICAL AFFILIATION MAP
 ```
 
-States with Delay
-
-Birth rates vary significantly between states. For example, Arkansas (AR) shows a sharp decrease in birth rates compared to other states. In contrast, Pennsylvania (PA) has a gentler slope. 
-
-The range of birth rates in 2001 spans from approximately 17 per 1000 (excluding Utah (UT)) people in certain states to below 15 per 1000 in others, with a convergence of rates around 12 to 14 per 1000.
-
-
-
-The states in this graph are ones which had a policy change from no delay to delay which allows for the analysis of the before-and-after effects of policy implementation. 
-
-For example, Arizona's (AZ) implementation year of 2009 shows birth rate descends sharply afterward. In contrast, North Carolina (NC) in 2011 didn't show such an immediate shift. 
-
-
-
-The states without delay policies showcase a natural decline in birth rates over time, without the potential influence of policy changes. This trend is consistent across the states, with some variations in the steepness of the decline. 
-
-For example, California (CA) maintains a relatively high birth rate over the years, starting near 15 per 1000 in 2001 and ending around 12 per 1000 in 2019. This could be influenced by its socio-economic profile and immigration patterns.
-
-
-
-All states show a general decline in relative birth rates over the 19-year period, which is in line with the national trend of declining birth rates. 
-
-
-
-State-Specific Trends:
-
-California (CA): The trend in California shows a relatively steady decline throughout the period, without any sharp changes. 
-
-Florida (FL): Florida's trend is similar to California's, with a gradual decline. 
-
-North Carolina (NC): North Carolina, with a policy change in 201, shows a relatively stable trend before the policy change and a sharper decline after.
-
-Texas (TX): Texas exhibited a noticeable decline after the policy implementation year of 2003.
-
-When contrasting the birth rates of Texas and California, two states with large populations, we see that Texas's birth rates declined more sharply after its policy change in 2003 compared to California. This might suggest an association between the policy implementation and the accelerated decline in birth rates in Texas. 
-
-
-Comparing Georgia and North Carolina, both of which implemented delay policies. Georgia's birth rates were rising before the policy change and then started declining after, while North Carolina's birth rates were relatively stable before 2011 and then declined.
-
-Discussion
-
-## First discussion point: Abortion 
-```{r}
-
-#relative average # of births in states delay
-
-#relative average # of births in states w/o delay
-
-#relative birth rates in selected states
-
-```
-
-
-#Second discussion: Political affiliation 
-
-```{r}
-# POLITICAL AFFILIATION MAP
-```
-
-Third discussion point: Minimum Wage
-
 Fourth discussion point: Education
-
 
 ```{r}
 #Education graph
 ```
 
-Weaknesses and next steps
+Weaknesses and next steps A weakness of this paper is a lack of
+economical context. For example, we analyze our data independent of
+events like the Recession that happened in 2008. Without providing
+context to current events in the time period, our paper gives a weaker
+justification for the decline in birthrates. Next steps for improving
+our analysis include not only providing context for the events happening
+in the US, but focusing on the birth rates on a more micro level. Since
+each state within the US has its own laws, it will provide more insight
+to focus on the birth rates within each state. Additionally, to improve
+our analysis furthermore, we can compare the US to other countries that
+are similar from an economical standpoint and compare their birth rate
+to the US.
 
 Weaknesses and next steps should also be included.
 
@@ -674,6 +601,3 @@ Model details
 ```{r}
 
 ```
-
-
-

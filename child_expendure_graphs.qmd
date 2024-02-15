@@ -1,12 +1,8 @@
 ---
-title: "graph"
+title: "child expenditure"
 format: html
 editor: visual
 ---
-
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
 ## Set Up
 
@@ -21,47 +17,27 @@ library(stata2r)
 
 #### Download data ####
 
-data <- read_dta("data/long_term/childcare_asec_09_1519.dta")
-head(data)
-```
-
-You can add options to executable code like this
-
-```{r}
-group
-
-
-ggplot(data, aes(x=year, y=obs)) +
-    geom_col() 
-```
-
-```{r}
-#### Download data ####
-
-child_enforce_data <- read_dta("data/annual_policy/policyvars01_19.dta")
+child_enforce_data <- read_dta("data/raw_data/annual_policy/policyvars01_19.dta")
 head(child_enforce_data)
+```
 
+```{r}
 
 # medicaid benefits
-ggplot(child_enforce_data, aes(x=year, y=aca_mcaid_exp)) +
-    geom_col() 
+ggplot(child_enforce_data, aes(x = year, y = aca_mcaid_exp)) +
+  geom_col(fill = "#1f77b4" ) + labs(x = "Year", y = "Number of people with ACA Medicaid Expenditure", title = "People who have ACA Medicaid Expenditure Over Time (Years)") + theme_minimal() +  theme(plot.title = element_text(hjust = 0.5))  
+```
 
+```{r}
 # max well fair benefits
 ggplot(child_enforce_data, aes(x=year, y=logben3)) +
-    geom_point() 
+    geom_point()  + labs(x = "Year", y = "Max Welfare Benefits", title = "Max Welfare Benefits Over Time (Years)") + theme_minimal() +  theme(plot.title = element_text(hjust = 0.5))  
 
+```
 
-#parental consent for abortion
-#ggplot(child_enforce_data, aes(x = year, y = parental)) +
-#  geom_bar(stat = "identity") 
- 
-
-#ggplot(child_enforce_data, aes(x = parental)) +
-#  geom_bar(position = "dodge") 
-
-
-# Bar plot
+```{r}
+# Parental
 ggplot(child_enforce_data, aes(x = factor(year), fill = factor(parental))) +
   geom_bar(position = "stack") +
-  labs(x = "Year", y = "Count", fill = "Interest", title = "Parental Abortion Intrest Distribution Over the Years")
+  labs(x = "Year", y = "Parental Consent for Abortion", fill = "Interest", title = "Distribution of Interest in Abortion by Parent Over Time (Years)") + theme_minimal() + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, vjust = 0.5))  
 ```

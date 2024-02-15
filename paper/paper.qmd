@@ -19,7 +19,7 @@ it highlights the underlying cause of why parents may not to have many children,
 which leads to a decline in birthrates."
 format: pdf
 number-sections: true
-#bibliography: references.bib
+bibliography: references.bib
 editor: 
   markdown: 
     wrap: 72
@@ -109,7 +109,7 @@ education, and childcare support important because they give deeper
 insights regarding why parents may not prefer to have many children and
 therefore may cause a decline in birthrates. The paper is structured to
 include the data, results, and the discussion that include our analysis.
-Although the code used in the original paper is Strata, we use R[@citeR]
+Although the code used in the original paper is Strata, we use R[@citeR], and other data exploration libraries[@knitr], [@rDplyr], [@rReadr], [@rGgplot2], [@rTidyverse] 
 to replicate some of its graphs, as well as to conduct analysis of our
 own.
 
@@ -945,198 +945,5 @@ from an economical standpoint and compare their birth rate to the US.
 \newpage
 
 # References
-@Dataset{ukcprWelfareData,
-  title = {UKCPR National Welfare Data, 1980-2021},
-  author = {{University of Kentucky Center for Poverty Research}},
-  year = {2023},
-  month = {Feb},
-  address = {Lexington, KY},
-  url = {http://ukcpr.org/resources/national-welfare-data%7D,
-  note = {Accessed: <Feb 15, 2024>},
-}
 
-@Manual{citeR,
-    title = {R: A Language and Environment for Statistical Computing},
-    author = {{R Core Team}},
-    organization = {R Foundation for Statistical Computing},
-    address = {Vienna, Austria},
-    year = {2023},
-    url = {https://www.R-project.org/},
-  }
-  
-@InBook{Grundy2015Demography,
-  author    = {Emily Grundy and Michael Murphy},
-  editor    = {Roger Detels and Martin Gulliford and Quarraisha Abdool Karim and Chorh Chuan Tan},
-  title     = {Demography and public health},
-  booktitle = {Oxford Textbook of Global Public Health},
-  publisher = {Oxford University Press},
-  address   = {Oxford, England},
-  edition   = {6},
-  pages     = {718--735},
-  year      = {2015},
-}
-  
-@Article{Kearney2022Puzzle,
-  author    = {Melissa S. Kearney and Phillip B. Levine and Luke Pardue},
-  title     = {The Puzzle of Falling US Birth Rates since the Great Recession},
-  journal   = {Journal of Economic Perspectives},
-  year      = {2022},
-  volume    = {36},
-  number    = {1},
-  pages     = {151--176},
-  doi       = {10.1257/jep.36.1.151},
-}
-  
-@Article{thereferencecanbewhatever,
-    title = {Welcome to the {tidyverse}},
-    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
-    year = {2019},
-    journal = {Journal of Open Source Software},
-    volume = {4},
-    number = {43},
-    pages = {1686},
-    doi = {10.21105/joss.01686},
-  }  
-  
-  
-  @Article{Nargund2009DecliningBirthRate,
-    title = {Declining birth rate in Developed Countries: A radical policy re-think is required},
-    author = {Nargund, G.},
-    year = {2009},
-    journal = {Facts Views Vis Obgyn},
-    volume = {1},
-    number = {3},
-    pages = {191-193},
-    PMID = {25489464},
-    PMCID = {PMC4255510},
-}
-  
-@Manual{citeLahman,
-    title = {Lahman: Sean `Lahman' Baseball Database},
-    author = {Michael Friendly and Chris Dalzell and Martin Monkman and Dennis Murphy},
-    year = {2020},
-    note = {R package version 8.0-0},
-    url = {https://CRAN.R-project.org/package=Lahman},
-  }  
-  
-  
-@article{gebru2021datasheets,
-  title={Datasheets for datasets},
-  author={Gebru, Timnit and Morgenstern, Jamie and Vecchione, Briana and Vaughan, Jennifer Wortman and Wallach, Hanna and Iii, Hal Daum{\'e} and Crawford, Kate},
-  journal={Communications of the ACM},
-  volume={64},
-  number={12},
-  pages={86--92},
-  year={2021},
-  publisher={ACM New York, NY, USA}
-}
-
-@Misc{rstanarm,
-    title = {rstanarm: {Bayesian} applied regression modeling via {Stan}},
-    author = {Ben Goodrich and Jonah Gabry and Imad Ali and Sam Brilleman},
-    note = {R package version 2.21.3},
-    year = {2022},
-    url = {https://mc-stan.org/rstanarm/},
-  }
-  
-@Manual{palmerpenguins,
-    title = {palmerpenguins: Palmer Archipelago (Antarctica) penguin data},
-    author = {Allison Marie Horst and Alison Presmanes Hill and Kristen B Gorman},
-    year = {2020},
-    note = {R package version 0.1.0},
-    doi = {10.5281/zenodo.3960218},
-    url = {https://allisonhorst.github.io/palmerpenguins/},
-  }
-  
-  
-@Article{rohan,
-    title = {Welcome to the {tidyverse}},
-    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
-    year = {2019},
-    journal = {Journal of Open Source Software},
-    volume = {4},
-    number = {43},
-    pages = {1686},
-    doi = {10.21105/joss.01686},
-  }  
-  
-@Manual{,
-  title = {readxl: Read Excel Files},
-  author = {Hadley Wickham and Jennifer Bryan},
-  year = {2023},
-  note = {https://readxl.tidyverse.org, https://github.com/tidyverse/readxl},
-}
-
-
-@Article{,
-    title = {Welcome to the {tidyverse}},
-    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and
-      Winston Chang and Lucy D'Agostino McGowan and Romain François and
-      Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester
-      and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan
-      Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson
-      and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and
-      Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
-    year = {2019},
-    journal = {Journal of Open Source Software},
-    volume = {4},
-    number = {43},
-    pages = {1686},
-    doi = {10.21105/joss.01686},
-  }
-
-
-
-@Article{,
-    title = {Diagnostic Checking in Regression Relationships},
-    author = {Achim Zeileis and Torsten Hothorn},
-    journal = {R News},
-    year = {2002},
-    volume = {2},
-    number = {3},
-    pages = {7--10},
-    url = {https://CRAN.R-project.org/doc/Rnews/},
-  }
-
-@Manual{sandwich,
-  title = {sandwich: Robust Covariance Matrix Estimators},
-  author = {Achim Zeileis},
-  year = {2022},
-  note = {R package version 3.0-1},
-  url = {https://CRAN.R-project.org/package=sandwich},
-}
-
-@Article{,
-    title = {Econometric Computing with {HC} and {HAC} Covariance
-      Matrix Estimators},
-    author = {Achim Zeileis},
-    journal = {Journal of Statistical Software},
-    year = {2004},
-    volume = {11},
-    number = {10},
-    pages = {1--17},
-    doi = {10.18637/jss.v011.i10},
-  }
-
-
-@Article{,
-    author = {Hadley Wickham},
-    title = {testthat: Get Started with Testing},
-    journal = {The R Journal},
-    year = {2011},
-    volume = {3},
-    pages = {5--10},
-    url =
-      {https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf},
-  }
-
-@Article{delondras2022impact,
-  title = {The impact of mandatory waiting periods on abortion-related outcomes: a synthesis of legal and health evidence},
-  author = {Fiona de Londras and Amanda Cleeve and Maria I. Rodriguez and Alana Farrell and Magdalena Furgalska and Antonella Lavelanet},
-  journal = {BMC Public Health},
-  volume = {22},
-  pages = {1232},
-  doi = {10.1186/s12889-022-13620-z},
-  url = {https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-022-13620-z},
-}
 

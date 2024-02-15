@@ -371,9 +371,7 @@ states_map <- map_data("state")
 # Merge with states map data
 map_data_merged <-
   left_join(states_map, data_merged, by = c("region" = "stname"))
-```
 
-```{r echo=FALSE, message=FALSE}
 # Plot
 ggplot(map_data_merged) +
   geom_polygon(
@@ -389,7 +387,7 @@ ggplot(map_data_merged) +
     data = map_data_merged %>% group_by(region) %>% summarise(
       long = mean(long),
       lat = mean(lat),
-      numbirths = first(births)
+      numbirths = first(numbirth1544)
     ),
     aes(x = long, y = lat, label = numbirths),
     size = 3,

@@ -1,0 +1,26 @@
+We are replicating three graphs from the paper:
+
+Box 1: Figure 1
+Title: Trend in US Birth Rates
+Authors: Melissa S. Kearney, Phillip B. Levine, and
+Luke Pardue
+Original Reproduction Package Available: Yes 
+Link to replication package: https://www.openicpsr.org/openicpsr/project/144981/version/V1/view
+Authors Available for Further Questions for SSRP Reproductions: No
+
+Box 2: Figure 2
+Title: Trends in Birth Rates by Population Subgroup
+Authors: Melissa S. Kearney, Phillip B. Levine, and
+Luke Pardue
+Original Reproduction Package Available: Yes 
+Link to replication package: https://www.openicpsr.org/openicpsr/project/144981/version/V1/view
+Authors Available for Further Questions for SSRP Reproductions: No
+
+Box 2: Table 1
+Title: The Eight Demographic Groups that Contributed the Most to the 2007–2019
+Decline in the US Birth Rate
+Authors: Melissa S. Kearney, Phillip B. Levine, and
+Luke Pardue
+Original Reproduction Package Available: Yes 
+Link to replication package: https://www.openicpsr.org/openicpsr/project/144981/version/V1/view
+Authors Available for Further Questions for SSRP Reproductions: No

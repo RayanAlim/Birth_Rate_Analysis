@@ -109,7 +109,7 @@ education, and childcare support important because they give deeper
 insights regarding why parents may not prefer to have many children and
 therefore may cause a decline in birthrates. The paper is structured to
 include the data, results, and the discussion that include our analysis.
-Although the code used in the original paper is Strata, we use R to
+Although the code used in the original paper is Strata, we use R[@citeR] to
 replicate some of its graphs, as well as to conduct analysis of our own.
 
 # Data {#sec-data}
